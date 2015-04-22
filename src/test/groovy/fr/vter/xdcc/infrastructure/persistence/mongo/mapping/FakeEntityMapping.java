@@ -7,6 +7,6 @@ public class FakeEntityMapping extends AggregateMap<FakeEntity> {
 
   @Override
   public void map() {
-    id().onProperty(element().getId()).natural();
+    id().onProperty(FakeEntity::getId).natural();
   }
 }
