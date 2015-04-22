@@ -2,6 +2,7 @@ package fr.vter.xdcc.model.bot
 
 import org.bson.types.ObjectId
 import spock.lang.Specification
+import watcher.model.bot.Bot
 
 class BotTest extends Specification {
 

@@ -1,4 +1,4 @@
-package fr.vter.xdcc.model.bot;
+package watcher.model.bot;
 
 import fr.vter.xdcc.model.GenericEntityWithObjectId;
 

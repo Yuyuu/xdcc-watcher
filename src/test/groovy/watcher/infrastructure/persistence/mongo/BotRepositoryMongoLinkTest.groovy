@@ -1,18 +1,19 @@
-package fr.vter.xdcc.infrastructure.persistence.mongo
+package watcher.infrastructure.persistence.mongo
 
-import fr.vter.xdcc.model.bot.Bot
+import fr.vter.xdcc.infrastructure.persistence.mongo.WithMongoLink
+import watcher.model.bot.Bot
 import org.junit.Rule
 import spock.lang.Specification
 
-class BotRepositoryTest extends Specification {
+class BotRepositoryMongoLinkTest extends Specification {
 
   @Rule
-  WithMongoLink mongolink = WithMongoLink.withPackage("fr.vter.xdcc.infrastructure.persistence.mongo.mapping")
+  WithMongoLink mongolink = WithMongoLink.withPackage("watcher.infrastructure.persistence.mongo.mapping")
 
-  BotRepository repository
+  BotRepositoryMongoLink repository
 
   def setup() {
-    repository = new BotRepository(mongolink.currentSession())
+    repository = new BotRepositoryMongoLink(mongolink.currentSession())
   }
 
   def "can add a bot"() {
