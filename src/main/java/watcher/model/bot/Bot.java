@@ -25,7 +25,7 @@ public class Bot implements EntityWithObjectId {
   }
 
   public void updatePacks(Set<Pack> packSet) {
-    this.packSet = packSet;
+    this.packs = packSet;
     updated();
   }
 
@@ -38,7 +38,7 @@ public class Bot implements EntityWithObjectId {
   }
 
   public boolean has(Pack pack) {
-    return packSet.contains(pack);
+    return packs.contains(pack);
   }
 
   public String getName() {
@@ -69,7 +69,7 @@ public class Bot implements EntityWithObjectId {
 
   private ObjectId id;
   private String name;
-  private Set<Pack> packSet = Sets.newHashSet();
+  private Set<Pack> packs = Sets.newHashSet();
   private Date lastChecked;
   private Date lastUpdated;
   private long schemaVersion = SCHEMA_VERSION;

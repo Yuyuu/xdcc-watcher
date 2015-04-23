@@ -36,7 +36,7 @@ class BotRepositoryMongoLinkTest extends Specification {
     given:
     def botId = ObjectId.get();
     def packId = ObjectId.get();
-    mongolink.collection("bot") << [_id:botId, name:"joe", packSet:[[_id:packId, position:6, title:"episode 6"]], schemaVersion:1]
+    mongolink.collection("bot") << [_id:botId, name:"joe", packs:[[_id:packId, position:6, title:"episode 6"]], schemaVersion:1]
 
     when:
     def bot = repository.get(botId)
@@ -45,7 +45,7 @@ class BotRepositoryMongoLinkTest extends Specification {
     bot.id == botId
     bot.name == "joe"
     bot.has(new Pack(6, "episode 6"))
-    bot.packSet.first().id == packId
+    bot.packs.first().id == packId
   }
 
   def "can remove a bot"() {
