@@ -1,10 +1,13 @@
 package watcher.infrastructure.persistence.mongo
 
 import fr.vter.xdcc.infrastructure.persistence.mongo.WithMongoLink
-import watcher.model.bot.Bot
+import org.bson.types.ObjectId
 import org.junit.Rule
 import spock.lang.Specification
+import watcher.model.bot.Bot
+import watcher.model.bot.Pack
 
+@SuppressWarnings("GroovyAccessibility")
 class BotRepositoryMongoLinkTest extends Specification {
 
   @Rule
@@ -25,22 +28,24 @@ class BotRepositoryMongoLinkTest extends Specification {
     mongolink.cleanSession();
 
     then:
-    def foundElement = mongolink.collection("bot").findOne(_id: bot.id)
-    foundElement["_id"] == bot.id
-    foundElement["name"] == "joe"
+    def foundElement = repository.get(bot.id)
+    foundElement == bot
   }
 
   def "can get a bot"() {
     given:
-    def bot = new Bot("joe")
+    def botId = ObjectId.get();
+    def packId = ObjectId.get();
+    mongolink.collection("bot") << [_id:botId, name:"joe", packSet:[[_id:packId, position:6, title:"episode 6"]], schemaVersion:1]
 
     when:
-    repository.add(bot)
-    mongolink.cleanSession();
+    def bot = repository.get(botId)
 
     then:
-    def foundElement = repository.get(bot.id)
-    foundElement["name"] == "joe"
+    bot.id == botId
+    bot.name == "joe"
+    bot.has(new Pack(6, "episode 6"))
+    bot.packSet.first().id == packId
   }
 
   def "can remove a bot"() {

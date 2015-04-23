@@ -3,6 +3,7 @@ package fr.vter.xdcc.model.bot
 import org.bson.types.ObjectId
 import spock.lang.Specification
 import watcher.model.bot.Bot
+import watcher.model.bot.Pack
 
 @SuppressWarnings("GroovyAccessibility")
 class BotTest extends Specification {
@@ -40,6 +41,30 @@ class BotTest extends Specification {
 
     expect:
     bot.lastChecked != null
+    bot.lastUpdated != null
+  }
+
+  def "can contain a pack"() {
+    given:
+    def bot = new Bot("joe")
+
+    when:
+    def pack = new Pack(2, "episode 2")
+    bot.updatePacks([pack] as Set)
+
+    then:
+    bot.has(pack)
+  }
+
+  def "date of last update is updated when packs are added"() {
+    given:
+    def bot = new Bot("joe")
+
+    when:
+    def pack = new Pack(2, "episode 2")
+    bot.updatePacks([pack] as Set)
+
+    then:
     bot.lastUpdated != null
   }
 }

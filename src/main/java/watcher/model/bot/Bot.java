@@ -1,13 +1,16 @@
 package watcher.model.bot;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 import fr.vter.xdcc.model.EntityWithObjectId;
 import org.bson.types.ObjectId;
 
 import java.util.Date;
+import java.util.Set;
 
 public class Bot implements EntityWithObjectId {
-  
+
   @SuppressWarnings("unused")
   protected Bot() {}
 
@@ -21,6 +24,11 @@ public class Bot implements EntityWithObjectId {
     this.name = name;
   }
 
+  public void updatePacks(Set<Pack> packSet) {
+    this.packSet = packSet;
+    updated();
+  }
+
   public void checked() {
     lastChecked = new Date();
   }
@@ -29,8 +37,26 @@ public class Bot implements EntityWithObjectId {
     lastUpdated = new Date();
   }
 
+  public boolean has(Pack pack) {
+    return packSet.contains(pack);
+  }
+
   public String getName() {
     return name;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Bot bot = (Bot) o;
+    return Objects.equal(id, bot.id) &&
+        Objects.equal(name, bot.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id, name);
   }
 
   @Override
@@ -43,6 +69,7 @@ public class Bot implements EntityWithObjectId {
 
   private ObjectId id;
   private String name;
+  private Set<Pack> packSet = Sets.newHashSet();
   private Date lastChecked;
   private Date lastUpdated;
   private long schemaVersion = SCHEMA_VERSION;
