@@ -5,7 +5,7 @@ import watcher.model.bot.Pack
 
 class PackTest extends Specification {
 
-  def "gets a default if upon creation"() {
+  def "gets a default id upon creation"() {
     given:
     def pack = new Pack(3, "episode 3")
 
