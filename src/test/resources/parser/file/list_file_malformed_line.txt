@@ -1,0 +1,10 @@
+** To stop this listing, type "/MSG [SeriaL]Xdcc`TBBT XDCC STOP" **
+** 158 packs **  5 of 5 slots open, Min: 10.0KB/s, Record: 2919.4KB/s
+** Bandwidth Usage ** Current: 0.0KB/s, Cap: 500.0KB/s, Record: 500.8KB/s
+** To request a file, type "/MSG [SeriaL]Xdcc`TBBT XDCC SEND x" **
+** To request details, type "/MSG [SeriaL]Xdcc`TBBT XDCC INFO x" **
+  #10   55x [175M] [175M] [175M] The.Big.Bang.Theory.S01E09.HDTV.XviD-XOR.avi
+  #16   50x [176M] The.Big.Bang.Theory.- S01E15 -.HDTV.XviD-FoV.avi
+  #17   49x [175M] The.Big.Bang.Theory.S01E16.HDTV.XviD-XOR.avi
+** Fourni par PastisD@Otaku-IRC.fr **
+Total Offered: 25GB  Total Transferred: 2.0TB
