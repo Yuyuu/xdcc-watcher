@@ -1,41 +1,47 @@
 package watcher.model.bot;
 
-import fr.vter.xdcc.model.GenericEntityWithObjectId;
+import com.google.common.base.MoreObjects;
+import fr.vter.xdcc.model.EntityWithObjectId;
+import org.bson.types.ObjectId;
 
 import java.util.Date;
 
-public class Bot extends GenericEntityWithObjectId {
+public class Bot implements EntityWithObjectId {
   
+  @SuppressWarnings("unused")
   protected Bot() {}
 
+  @Override
+  public ObjectId getId() {
+    return id;
+  }
+
   public Bot(String name) {
+    id = ObjectId.get();
     this.name = name;
+  }
+
+  public void checked() {
+    lastChecked = new Date();
+  }
+
+  public void updated() {
+    lastUpdated = new Date();
   }
 
   public String getName() {
     return name;
   }
 
-  public Date getLastChecked() {
-    return lastChecked;
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("name", name)
+        .toString();
   }
 
-  public void setLastChecked(Date lastChecked) {
-    this.lastChecked = lastChecked;
-  }
-
-  public Date getLastUpdated() {
-    return lastUpdated;
-  }
-
-  public void setLastUpdated(Date lastUpdated) {
-    this.lastUpdated = lastUpdated;
-  }
-
-  public long getSchemaVersion() {
-    return schemaVersion;
-  }
-
+  private ObjectId id;
   private String name;
   private Date lastChecked;
   private Date lastUpdated;
