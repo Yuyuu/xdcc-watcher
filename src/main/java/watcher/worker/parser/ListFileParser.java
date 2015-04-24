@@ -25,7 +25,7 @@ public class ListFileParser {
     Map<Long, String> packs = Maps.newHashMap();
     Path pathToFile = FileSystems.getDefault().getPath(file.getAbsolutePath());
 
-    LOG.debug("Parsing file: {}", file.getName());
+    LOGGER.debug("Parsing file: {}", file.getName());
     try {
       Files.lines(pathToFile)
           .filter(line -> line.trim().startsWith("#"))
@@ -33,7 +33,7 @@ public class ListFileParser {
           .filter(pack -> pack != null)
           .forEach(pack -> packs.put(pack.id, pack.title));
     } catch (IOException e) {
-      LOG.error("Failed to open {}: {}", file.getName(), e);
+      LOGGER.error("Failed to open {}: {}", file.getName(), e);
     }
 
     return packs;
@@ -44,7 +44,7 @@ public class ListFileParser {
     String[] splitPart = patternToSplitLine.split(packLine);
 
     if (splitPart.length != 2) {
-      LOG.error("Cannot parse malformed line [{}]", packLine);
+      LOGGER.error("Cannot parse malformed line [{}]", packLine);
       return null;
     }
 
@@ -54,7 +54,7 @@ public class ListFileParser {
       String id = stripNumberSign(packIdMatcher.group());
       packEntry = new PackEntry(Long.parseLong(id), splitPart[1]);
     } else {
-      LOG.error("No pack id match for line [{}]", packLine);
+      LOGGER.error("No pack id match for line [{}]", packLine);
     }
 
     return packEntry;
@@ -82,5 +82,5 @@ public class ListFileParser {
   private static final String PACK_ID_REGEX = "#\\d+";
   // Searches for the end of the size declaration
   private static final String SPLIT_REGEX = "(?i)\\d{1,3}[KMG]\\]\\s";
-  private static final Logger LOG = LoggerFactory.getLogger(ListFileParser.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ListFileParser.class);
 }
