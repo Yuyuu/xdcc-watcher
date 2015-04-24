@@ -10,7 +10,7 @@ class ListFileParserTest extends Specification {
 
   def "converts a list file into packs"() {
     given:
-    File listFile = new File(getClass().classLoader.getResource("parser/file/list_file_well_formed.txt").file)
+    File listFile = getResourceFile("list_file_well_formed.txt")
 
     when:
     def packs = listFileParser.parsePacksFrom(listFile)
@@ -29,7 +29,7 @@ class ListFileParserTest extends Specification {
 
   def "skips a line if it cannot be split correctly"() {
     given:
-    File listFile = new File(getClass().classLoader.getResource("parser/file/list_file_malformed_line.txt").file)
+    File listFile = getResourceFile("list_file_malformed_line.txt")
 
     when:
     def packs = listFileParser.parsePacksFrom(listFile)
@@ -42,7 +42,7 @@ class ListFileParserTest extends Specification {
 
   def "skips a line with a malformed pack id"() {
     given:
-    File listFile = new File(getClass().classLoader.getResource("parser/file/list_file_malformed_id.txt").file)
+    File listFile = getResourceFile("list_file_malformed_id.txt")
 
     when:
     def packs = listFileParser.parsePacksFrom(listFile)
@@ -51,5 +51,9 @@ class ListFileParserTest extends Specification {
     packs.get(10L) == null
     packs.get(16L) == "The.Big.Bang.Theory.- S01E15 -.HDTV.XviD-FoV.avi"
     packs.get(17L) == "The.Big.Bang.Theory.S01E16.HDTV.XviD-XOR.avi"
+  }
+
+  private File getResourceFile(String path) {
+    return new File(getClass().classLoader.getResource("parser/file/$path").file)
   }
 }
