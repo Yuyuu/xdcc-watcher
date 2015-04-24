@@ -36,14 +36,14 @@ class BotRepositoryMongoLinkTest extends Specification {
     given:
     def botId = ObjectId.get();
     def packId = ObjectId.get();
-    mongolink.collection("bot") << [_id:botId, name:"joe", packs:[[_id:packId, position:6, title:"episode 6"]], schemaVersion:1]
+    mongolink.collection("bot") << [_id:botId, nickname:"joe", packs:[[_id:packId, position:6, title:"episode 6"]], schemaVersion:1]
 
     when:
     def bot = repository.get(botId)
 
     then:
     bot.id == botId
-    bot.name == "joe"
+    bot.nickname == "joe"
     bot.has(new Pack(6, "episode 6"))
     bot.packs.first().id == packId
   }

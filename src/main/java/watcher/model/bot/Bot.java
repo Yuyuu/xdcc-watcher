@@ -19,9 +19,9 @@ public class Bot implements EntityWithObjectId {
     return id;
   }
 
-  public Bot(String name) {
+  public Bot(String nickname) {
     id = ObjectId.get();
-    this.name = name;
+    this.nickname = nickname;
   }
 
   public void updatePacks(Set<Pack> packSet) {
@@ -41,8 +41,12 @@ public class Bot implements EntityWithObjectId {
     return packs.contains(pack);
   }
 
-  public String getName() {
-    return name;
+  public String getNickname() {
+    return nickname;
+  }
+
+  public Set<Pack> packs() {
+    return packs;
   }
 
   @Override
@@ -51,24 +55,24 @@ public class Bot implements EntityWithObjectId {
     if (o == null || getClass() != o.getClass()) return false;
     Bot bot = (Bot) o;
     return Objects.equal(id, bot.id) &&
-        Objects.equal(name, bot.name);
+        Objects.equal(nickname, bot.nickname);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, name);
+    return Objects.hashCode(id, nickname);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
         .add("id", id)
-        .add("name", name)
+        .add("name", nickname)
         .toString();
   }
 
   private ObjectId id;
-  private String name;
+  private String nickname;
   private Set<Pack> packs = Sets.newHashSet();
   private Date lastChecked;
   private Date lastUpdated;

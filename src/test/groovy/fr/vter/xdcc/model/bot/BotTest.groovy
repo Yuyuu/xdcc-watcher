@@ -30,7 +30,7 @@ class BotTest extends Specification {
     def bot = new Bot("joe")
 
     expect:
-    bot.name == "joe"
+    bot.nickname == "joe"
   }
 
   def "keeps track of the last update and check"() {

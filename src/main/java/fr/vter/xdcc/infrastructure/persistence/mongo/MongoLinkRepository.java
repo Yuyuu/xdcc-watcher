@@ -5,6 +5,7 @@ import fr.vter.xdcc.model.EntityWithObjectId;
 import fr.vter.xdcc.model.Repository;
 import org.bson.types.ObjectId;
 import org.mongolink.MongoSession;
+import org.mongolink.domain.criteria.Criteria;
 
 public abstract class MongoLinkRepository<TEntity extends EntityWithObjectId> implements Repository<TEntity> {
 
@@ -25,6 +26,10 @@ public abstract class MongoLinkRepository<TEntity extends EntityWithObjectId> im
   @Override
   public void remove(TEntity entity) {
     getSession().delete(entity);
+  }
+
+  protected Criteria criteria() {
+    return session.createCriteria(entityType());
   }
 
   protected Class<TEntity> entityType() {

@@ -8,7 +8,7 @@ public class BotMapping extends AggregateMap<Bot> {
   @Override
   public void map() {
     id().onField("id").natural();
-    property().onField("name");
+    property().onField("nickname");
     collection().onField("packs");
     property().onField("lastUpdated");
     property().onField("lastChecked");
