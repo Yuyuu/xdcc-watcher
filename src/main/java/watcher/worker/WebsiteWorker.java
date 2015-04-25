@@ -2,9 +2,7 @@ package watcher.worker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import watcher.model.RepositoryLocator;
 import watcher.model.bot.Bot;
-import watcher.model.bot.Pack;
 import watcher.worker.parser.WebsiteParser;
 
 import javax.inject.Inject;
@@ -13,11 +11,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-public class WebsiteWorker {
+public class WebsiteWorker extends Worker {
 
   @Inject
   public WebsiteWorker(WebsiteParser websiteParser, BotListingUrlFinder botListingUrlFinder) {
@@ -38,44 +34,16 @@ public class WebsiteWorker {
     try (InputStream listingData = new URL(botListingUrl).openStream()) {
       Map<Long, String> packDataFromWebsite = websiteParser.parsePacksFrom(listingData);
       bot.setListingUrl(botListingUrl);
-      internalUpdate(bot, packDataFromWebsite);
+      updatePacks(bot, packDataFromWebsite);
     } catch (IOException e) {
+      bot.setListingUrl(null);
       LOGGER.error(
           "Failed to open a connection at {} listing URL [{}]: {}",
           botNickname,
           botListingUrl,
           e
       );
-      bot.setListingUrl(null);
     }
-  }
-
-  private void internalUpdate(Bot bot, Map<Long,String> packDataFromWebsite) {
-    Set<Pack> packs = packDataFromWebsite.entrySet().stream()
-        .map(entry -> new Pack(entry.getKey(), entry.getValue()))
-        .collect(Collectors.toSet());
-
-    if (!packs.equals(bot.packs())) {
-      bot.updatePacks(packs);
-      LOGGER.info("Bot {} has new packs", bot.getNickname());
-    } else {
-      LOGGER.debug("Packs of bot {} remain unchanged", bot.getNickname());
-    }
-
-    bot.checked();
-  }
-
-  private Bot getBotWithNickname(String nickname) {
-    final Optional<Bot> optional = RepositoryLocator.bots().findByNickname(nickname);
-    return optional.orElseGet(createBot(nickname));
-  }
-
-  private Supplier<Bot> createBot(String botNickname) {
-    return () -> {
-      final Bot result = new Bot(botNickname);
-      RepositoryLocator.bots().add(result);
-      return result;
-    };
   }
 
   private Supplier<String> findListingUrl(String botNickname) {
