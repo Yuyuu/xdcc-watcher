@@ -62,6 +62,20 @@ class WebsiteWorkerTest extends Specification {
     bot.url() == url
   }
 
+  def "resets the known listing URL if an error occurs"() {
+    given:
+    def joeBot = new Bot("joe")
+    joeBot.setListingUrl("problematic_url")
+    RepositoryLocator.bots().add(joeBot)
+
+    when:
+    websiteWorker.updateAvailablePacks("joe")
+
+    then:
+    def bot = RepositoryLocator.bots().get(joeBot.id)
+    bot.url() == null
+  }
+
   def "can create the bot if it does not exist yet"() {
     given:
     botListingUrlFinder.findListingUrl("joe", _ as InputStream) >> urlToResource("finder/empty_page.html")

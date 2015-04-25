@@ -40,7 +40,6 @@ public class WebsiteWorker {
       bot.setListingUrl(botListingUrl);
       internalUpdate(bot, packDataFromWebsite);
     } catch (IOException e) {
-      e.printStackTrace();
       LOGGER.error(
           "Failed to open a connection at {} listing URL [{}]: {}",
           botNickname,
