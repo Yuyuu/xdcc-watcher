@@ -37,6 +37,10 @@ public class Bot implements EntityWithObjectId {
     lastUpdated = new Date();
   }
 
+  public void setListingUrl(String listingUrl) {
+    this.listingUrl = listingUrl;
+  }
+
   public boolean has(Pack pack) {
     return packs.contains(pack);
   }
@@ -47,6 +51,10 @@ public class Bot implements EntityWithObjectId {
 
   public Set<Pack> packs() {
     return packs;
+  }
+
+  public String url() {
+    return listingUrl;
   }
 
   @Override
@@ -74,6 +82,7 @@ public class Bot implements EntityWithObjectId {
   private ObjectId id;
   private String nickname;
   private Set<Pack> packs = Sets.newHashSet();
+  private String listingUrl;
   private Date lastChecked;
   private Date lastUpdated;
   private long schemaVersion = SCHEMA_VERSION;

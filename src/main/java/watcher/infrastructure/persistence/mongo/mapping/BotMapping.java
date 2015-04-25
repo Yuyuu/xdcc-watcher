@@ -9,6 +9,7 @@ public class BotMapping extends AggregateMap<Bot> {
   public void map() {
     id().onField("id").natural();
     property().onField("nickname");
+    property().onField("listingUrl");
     collection().onField("packs");
     property().onField("lastUpdated");
     property().onField("lastChecked");

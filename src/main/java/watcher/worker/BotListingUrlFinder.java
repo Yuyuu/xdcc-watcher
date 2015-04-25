@@ -11,7 +11,7 @@ public class BotListingUrlFinder {
     String normalizedBotNickname = Sanitizer.sanitizeBotNickname(botNickname);
     String botListingUrl = null;
 
-    try(BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
       String inputLine;
       while ((inputLine = reader.readLine()) != null) {
         if (inputLine.contains(normalizedBotNickname)) {
