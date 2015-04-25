@@ -22,8 +22,8 @@ public class ListFileParser {
   }
 
   public Map<Long, String> parsePacksFrom(File file) {
-    Map<Long, String> packs = Maps.newHashMap();
-    Path pathToFile = FileSystems.getDefault().getPath(file.getAbsolutePath());
+    final Map<Long, String> packs = Maps.newHashMap();
+    final Path pathToFile = FileSystems.getDefault().getPath(file.getAbsolutePath());
 
     LOGGER.debug("Parsing file: {}", file.getName());
     try {
@@ -41,7 +41,7 @@ public class ListFileParser {
 
   private PackEntry extractPackEntry(String packLine) {
     PackEntry packEntry = null;
-    String[] splitPart = patternToSplitLine.split(packLine);
+    final String[] splitPart = patternToSplitLine.split(packLine);
 
     if (splitPart.length != 2) {
       LOGGER.error("Cannot parse malformed line [{}]", packLine);
@@ -51,7 +51,7 @@ public class ListFileParser {
     packIdMatcher.reset(splitPart[0]);
 
     if (packIdMatcher.find()) {
-      String id = stripNumberSign(packIdMatcher.group());
+      final String id = stripNumberSign(packIdMatcher.group());
       packEntry = new PackEntry(Long.parseLong(id), splitPart[1]);
     } else {
       LOGGER.error("No pack id match for line [{}]", packLine);

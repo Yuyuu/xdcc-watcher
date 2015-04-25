@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 public abstract class Worker {
 
   protected void updatePacks(Bot bot, Map<Long,String> packDataFromExternalSource) {
-    Set<Pack> packs = packDataFromExternalSource.entrySet().stream()
+    final Set<Pack> packs = packDataFromExternalSource.entrySet().stream()
         .map(entry -> new Pack(entry.getKey(), entry.getValue()))
         .collect(Collectors.toSet());
 
     if (!packs.equals(bot.packs())) {
       bot.updatePacks(packs);
-      LOGGER.info("Bot {} has new packs", bot.getNickname());
+      LOGGER.info("Bot {} has new packs", bot.nickname());
     } else {
-      LOGGER.debug("Packs of bot {} remain unchanged", bot.getNickname());
+      LOGGER.debug("Packs of bot {} remain unchanged", bot.nickname());
     }
 
     bot.checked();

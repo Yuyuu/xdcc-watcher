@@ -15,9 +15,9 @@ public class ListFileWorker extends Worker {
   }
 
   public void updateAvailablePacks(String botNickname, File packsFile) {
-    Map<Long, String> packDataFromFile = listFileParser.parsePacksFrom(packsFile);
+    final Map<Long, String> packDataFromFile = listFileParser.parsePacksFrom(packsFile);
 
-    Bot bot = getBotWithNickname(botNickname);
+    final Bot bot = getBotWithNickname(botNickname);
 
     updatePacks(bot, packDataFromFile);
   }

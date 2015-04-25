@@ -11,7 +11,7 @@ public class MemoryBotRepository extends MemoryRepository<Bot> implements BotRep
   @Override
   public Optional<Bot> findByNickname(String nickname) {
     return entities.stream()
-        .filter(entity -> entity.getNickname().equals(nickname))
+        .filter(entity -> entity.nickname().equals(nickname))
         .findFirst();
   }
 }

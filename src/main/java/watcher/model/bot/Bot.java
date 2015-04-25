@@ -45,7 +45,7 @@ public class Bot implements EntityWithObjectId {
     return packs.contains(pack);
   }
 
-  public String getNickname() {
+  public String nickname() {
     return nickname;
   }
 

@@ -11,16 +11,16 @@ import java.util.Map;
 public class WebsiteParser {
 
   public Map<Long, String> parsePacksFrom(InputStream stream) throws IOException {
-    Map<Long, String> packs = Maps.newHashMap();
+    final Map<Long, String> packs = Maps.newHashMap();
 
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
       String inputLine;
       while ((inputLine = reader.readLine()) != null) {
         if (inputLine.contains("Pack #")) {
-          long packId = extractPackIdFrom(inputLine);
+          final long packId = extractPackIdFrom(inputLine);
 
-          String packTitleLine = reader.readLine();
-          String packTitle = extractPackTitleFrom(packTitleLine);
+          final String packTitleLine = reader.readLine();
+          final String packTitle = extractPackTitleFrom(packTitleLine);
 
           packs.put(packId, packTitle);
         }
@@ -31,7 +31,7 @@ public class WebsiteParser {
   }
 
   private long extractPackIdFrom(String packIdLine) {
-    String idAsString = packIdLine.substring(packIdLine.indexOf("#") + 1, packIdLine.indexOf("</td>"));
+    final String idAsString = packIdLine.substring(packIdLine.indexOf("#") + 1, packIdLine.indexOf("</td>"));
     return Long.parseLong(idAsString);
   }
 

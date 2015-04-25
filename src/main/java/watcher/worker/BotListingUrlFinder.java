@@ -8,10 +8,10 @@ import java.io.InputStreamReader;
 public class BotListingUrlFinder {
 
   public String findListingUrl(String botNickname, InputStream stream) throws IOException {
-    String normalizedBotNickname = Sanitizer.sanitizeBotNickname(botNickname);
+    final String normalizedBotNickname = Sanitizer.sanitizeBotNickname(botNickname);
     String botListingUrl = null;
 
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+    try (final BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
       String inputLine;
       while ((inputLine = reader.readLine()) != null) {
         if (inputLine.contains(normalizedBotNickname)) {

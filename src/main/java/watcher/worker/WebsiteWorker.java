@@ -22,17 +22,17 @@ public class WebsiteWorker extends Worker {
   }
 
   public void updateAvailablePacks(String botNickname) {
-    Bot bot = getBotWithNickname(botNickname);
+    final Bot bot = getBotWithNickname(botNickname);
 
-    String botListingUrl = Optional.ofNullable(bot.url()).orElseGet(findListingUrl(botNickname));
+    final String botListingUrl = Optional.ofNullable(bot.url()).orElseGet(findListingUrl(botNickname));
 
     if (botListingUrl == null) {
       LOGGER.error("Listing URL of bot {} could not be found", botNickname);
       return;
     }
 
-    try (InputStream listingData = new URL(botListingUrl).openStream()) {
-      Map<Long, String> packDataFromWebsite = websiteParser.parsePacksFrom(listingData);
+    try (final InputStream listingData = new URL(botListingUrl).openStream()) {
+      final Map<Long, String> packDataFromWebsite = websiteParser.parsePacksFrom(listingData);
       bot.setListingUrl(botListingUrl);
       updatePacks(bot, packDataFromWebsite);
     } catch (IOException e) {
@@ -49,7 +49,7 @@ public class WebsiteWorker extends Worker {
   private Supplier<String> findListingUrl(String botNickname) {
     return () -> {
       String listingUrl = null;
-      try (InputStream htmlData = WebsiteLocator.xdaysaysay().openStream()) {
+      try (final InputStream htmlData = WebsiteLocator.xdaysaysay().openStream()) {
         listingUrl = botListingUrlFinder.findListingUrl(botNickname, htmlData);
       } catch (IOException e) {
         LOGGER.error("Failed to open a connection to the listing website: {}", e);
