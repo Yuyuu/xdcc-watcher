@@ -37,7 +37,9 @@ class BotWorkerTest extends Specification {
     botWorker.updateAvailableBots(["lea", "bob", "kim"])
 
     then:
-    RepositoryLocator.bots().get(kimBot.id) == kimBot
+    def repository = RepositoryLocator.bots()
+    repository.get(kimBot.id) == kimBot
+    repository.findByNickname("kim").get().id == kimBot.id
   }
 
   def "removes the bots that are not present anymore"() {
