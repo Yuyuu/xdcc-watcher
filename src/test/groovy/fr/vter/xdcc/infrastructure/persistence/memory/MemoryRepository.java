@@ -13,7 +13,7 @@ public class MemoryRepository<TEntity extends EntityWithObjectId> implements Rep
   public TEntity get(ObjectId id) {
     return entities.stream()
         .filter(entity -> entity.getId().equals(id))
-        .findFirst().get();
+        .findFirst().orElse(null);
   }
 
   @Override

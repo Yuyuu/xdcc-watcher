@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import fr.vter.xdcc.model.EntityWithObjectId;
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.Id;
 
 import java.util.Date;
 import java.util.Set;
@@ -79,6 +80,7 @@ public class Bot implements EntityWithObjectId {
         .toString();
   }
 
+  @Id
   private ObjectId id;
   private String nickname;
   private Set<Pack> packs = Sets.newHashSet();

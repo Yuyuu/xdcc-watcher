@@ -1,12 +1,15 @@
 package watcher.infrastructure.persistence.mongo;
 
+import com.google.common.collect.Lists;
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkRepository;
+import org.jongo.Jongo;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
 import watcher.model.bot.Bot;
 import org.mongolink.MongoSession;
 import watcher.model.bot.BotRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +20,27 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
   }
 
   @Override
+  public List<Bot> getAllWithoutLoadingPacks() {
+    final Jongo jongo = new Jongo(getSession().getDb());
+    final Iterable<Bot> bots = jongo.getCollection("bot").find().projection("{packs: 0}").as(Bot.class);
+    return Lists.newArrayList(bots);
+  }
+
+  @Override
   public Optional<Bot> findByNickname(String nickname) {
     final Criteria criteria = criteria();
-    criteria.add(Restrictions.equals("name", nickname));
+    criteria.add(Restrictions.equals("nickname", nickname));
     List<Bot> bots = criteria.list();
     return bots.stream().findFirst();
+  }
+
+  @Override
+  public void addAll(Collection<Bot> bots) {
+    bots.stream().forEach(this::add);
+  }
+
+  @Override
+  public void removeAll(Collection<Bot> bots) {
+    bots.stream().forEach(this::remove);
   }
 }
