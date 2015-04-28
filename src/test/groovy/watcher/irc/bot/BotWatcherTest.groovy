@@ -38,9 +38,9 @@ class BotWatcherTest extends Specification {
     then:
     1 * mongoLinkContext.beforeExecution()
     then:
-    1* mongoLinkContext.afterExecution()
+    1 * mongoLinkContext.afterExecution()
     then:
-    1* mongoLinkContext.ultimately()
+    1 * mongoLinkContext.ultimately()
   }
 
   def "handles errors on the context"() {
