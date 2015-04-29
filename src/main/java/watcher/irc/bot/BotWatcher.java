@@ -39,7 +39,7 @@ public class BotWatcher extends PircBot {
   protected void onUserList(String channel, User[] channelUsers) {
     List<User> users = Lists.newArrayList(channelUsers);
     List<String> namesOfBotsInChannel = users.stream()
-        .filter(this::isABot)
+        .filter(Security::isABot)
         .map(bot -> stripChannelPrefix(bot.getNick()))
         .collect(Collectors.toList());
 
@@ -61,16 +61,11 @@ public class BotWatcher extends PircBot {
     disconnect();
   }
 
-  private boolean isABot(User user) {
-    return botPrefixes.stream().anyMatch(prefix -> user.getNick().startsWith(prefix));
-  }
-
   private String stripChannelPrefix(String nickname) {
     return nickname.substring(1);
   }
 
   private final MongoLinkContext mongoLinkContext;
   private final BotWorker botWorker;
-  private static final List<String> botPrefixes = Lists.newArrayList("%[SeriaL]", "%[DarksiDe]", "%[Darkside]", "%iNFEXiOUS");
   private static final Logger LOGGER = LoggerFactory.getLogger(BotWatcher.class);
 }

@@ -1,20 +1,18 @@
 package watcher.irc.bot;
 
-import com.google.common.collect.Lists;
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkContext;
 import org.jibble.pircbot.DccFileTransfer;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.ReplyConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import watcher.irc.bot.state.WatcherWithExternalState;
 import watcher.irc.bot.state.StateHandler;
+import watcher.irc.bot.state.WatcherWithExternalState;
 import watcher.worker.ListFileWorker;
 import watcher.worker.WebsiteWorker;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.util.List;
 
 public class PackWatcher extends PircBot implements WatcherWithExternalState {
 
@@ -85,7 +83,7 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
 
   @Override
   protected void onIncomingFileTransfer(DccFileTransfer transfer) {
-    if (isSenderLegit(transfer)) {
+    if (Security.isSourceABot(transfer)) {
       File file = new File(filename(transfer));
       transfer.receive(file, false);
       LOGGER.info("Accepted file {} from {}", file.getName(), transfer.getNick());
@@ -93,10 +91,6 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
       LOGGER.info("Rejected file from: {}", transfer.getNick());
       transfer.close();
     }
-  }
-
-  private boolean isSenderLegit(DccFileTransfer transfer) {
-    return legitSenderPrefixes.stream().anyMatch(prefix -> transfer.getNick().startsWith(prefix));
   }
 
   private void botChecked() {
@@ -130,6 +124,5 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
   private final MongoLinkContext mongoLinkContext;
   private final ListFileWorker listFileWorker;
   private final WebsiteWorker websiteWorker;
-  private static final List<String> legitSenderPrefixes = Lists.newArrayList("[SeriaL]Xdcc`" ,"[DarksiDe]`", "[Darkside]`" , "iNFEXiOUS`");
   private static final Logger LOGGER = LoggerFactory.getLogger(PackWatcher.class);
 }
