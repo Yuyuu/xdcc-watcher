@@ -7,6 +7,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.ReplyConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import watcher.irc.bot.state.WatcherWithExternalState;
 import watcher.irc.bot.state.StateHandler;
 import watcher.worker.ListFileWorker;
 import watcher.worker.WebsiteWorker;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.util.List;
 
-public class PackWatcher extends PircBot implements ExternalState {
+public class PackWatcher extends PircBot implements WatcherWithExternalState {
 
   @Inject
   public PackWatcher(MongoLinkContext mongoLinkContext, ListFileWorker listFileWorker, WebsiteWorker websiteWorker) {

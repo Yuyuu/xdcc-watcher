@@ -4,9 +4,8 @@ import watcher.irc.bot.PackWatcher;
 
 public class PackWatcherStateHandler implements StateHandler {
 
-  public PackWatcherStateHandler(PackWatcher bot, int numberOfBotsToCheck) {
-    this.bot = bot;
-    this.bot.setStateHandler(this);
+  public PackWatcherStateHandler(PackWatcher packWatcher, int numberOfBotsToCheck) {
+    this.packWatcher = packWatcher;
     this.numberOfBotsToCheck = numberOfBotsToCheck;
   }
 
@@ -14,11 +13,11 @@ public class PackWatcherStateHandler implements StateHandler {
   public void done() {
     botsChecked++;
     if (botsChecked >= numberOfBotsToCheck) {
-      bot.terminate();
+      packWatcher.terminate();
     }
   }
 
   private int botsChecked = 0;
-  private final PackWatcher bot;
+  private final PackWatcher packWatcher;
   private final int numberOfBotsToCheck;
 }
