@@ -13,8 +13,8 @@ public class WatcherFactory {
     this.injector = injector;
   }
 
-  public <TBot extends PircBot> TBot createWatcher(Class<TBot> botClass) {
-    return injector.getInstance(botClass);
+  public <TWatcher extends PircBot> TWatcher createWatcher(Class<TWatcher> watcherClass) {
+    return injector.getInstance(watcherClass);
   }
 
   public PackWatcher createPackWatcherWithObjective(int numberOfBotsToUpdate) {
