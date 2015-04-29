@@ -5,7 +5,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import fr.vter.xdcc.model.EntityWithObjectId;
 import org.bson.types.ObjectId;
-import org.jongo.marshall.jackson.oid.Id;
 
 import java.util.Date;
 import java.util.Set;
@@ -17,11 +16,11 @@ public class Bot implements EntityWithObjectId {
 
   @Override
   public ObjectId getId() {
-    return id;
+    return _id;
   }
 
   public Bot(String nickname) {
-    id = ObjectId.get();
+    _id = ObjectId.get();
     this.nickname = nickname;
   }
 
@@ -63,25 +62,24 @@ public class Bot implements EntityWithObjectId {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Bot bot = (Bot) o;
-    return Objects.equal(id, bot.id) &&
+    return Objects.equal(_id, bot._id) &&
         Objects.equal(nickname, bot.nickname);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, nickname);
+    return Objects.hashCode(_id, nickname);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("id", id)
+        .add("id", _id)
         .add("nickname", nickname)
         .toString();
   }
 
-  @Id
-  private ObjectId id;
+  private ObjectId _id;
   private String nickname;
   private Set<Pack> packs = Sets.newHashSet();
   private String listingUrl;

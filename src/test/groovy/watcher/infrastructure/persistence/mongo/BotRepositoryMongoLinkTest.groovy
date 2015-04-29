@@ -86,7 +86,7 @@ class BotRepositoryMongoLinkTest extends Specification {
     expect:
     List<Bot> list = repository.getAllWithoutLoadingPacks();
     list.size() == 2
-    list.every { it.packs().size() == 0 }
+    list.every { it.id != null && it.packs().size() == 0 }
   }
 
   def "can add several at once"() {
