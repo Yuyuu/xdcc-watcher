@@ -2,7 +2,6 @@ package watcher.irc.bot;
 
 import com.google.common.collect.Lists;
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkContext;
-import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BotWatcher extends PircBot {
+public class BotWatcher extends GenericWatcher {
 
   @Inject
   public BotWatcher(MongoLinkContext mongoLinkContext, BotWorker botWorker) {

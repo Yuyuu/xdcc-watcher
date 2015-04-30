@@ -13,7 +13,7 @@ public class PackWatcherStateHandler implements StateHandler {
   public void done() {
     botsChecked++;
     if (botsChecked >= numberOfBotsToCheck) {
-      packWatcher.terminate();
+      packWatcher.disconnectFromServer();
     }
   }
 

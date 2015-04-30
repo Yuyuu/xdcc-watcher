@@ -21,7 +21,7 @@ class PackWatcherStateHandlerTest extends Specification {
     stateHandler.done()
 
     then:
-    0 * packWatcher.terminate()
+    0 * packWatcher.disconnectFromServer()
     stateHandler.botsChecked == 1
   }
 
@@ -33,6 +33,6 @@ class PackWatcherStateHandlerTest extends Specification {
     stateHandler.done()
 
     then:
-    1 * packWatcher.terminate()
+    1 * packWatcher.disconnectFromServer()
   }
 }

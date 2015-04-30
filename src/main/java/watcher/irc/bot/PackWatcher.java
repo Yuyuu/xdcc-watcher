@@ -2,7 +2,6 @@ package watcher.irc.bot;
 
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkContext;
 import org.jibble.pircbot.DccFileTransfer;
-import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.ReplyConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,7 @@ import watcher.worker.WebsiteWorker;
 import javax.inject.Inject;
 import java.io.File;
 
-public class PackWatcher extends PircBot implements WatcherWithExternalState {
+public class PackWatcher extends GenericWatcher implements WatcherWithExternalState {
 
   @Inject
   public PackWatcher(MongoLinkContext mongoLinkContext, ListFileWorker listFileWorker, WebsiteWorker websiteWorker) {
@@ -95,7 +94,7 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
 
   private void botChecked() {
     if (stateHandler == null) {
-      terminate();
+      disconnectFromServer();
     } else {
       stateHandler.done();
     }
@@ -113,11 +112,6 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
   @Override
   public void setStateHandler(StateHandler stateHandler) {
     this.stateHandler = stateHandler;
-  }
-
-  @Override
-  public void terminate() {
-    disconnect();
   }
 
   private StateHandler stateHandler;
