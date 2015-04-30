@@ -37,8 +37,8 @@ public class BotWatcher extends PircBot {
 
   @Override
   protected void onUserList(String channel, User[] channelUsers) {
-    List<User> users = Lists.newArrayList(channelUsers);
-    List<String> namesOfBotsInChannel = users.stream()
+    final List<User> users = Lists.newArrayList(channelUsers);
+    final List<String> namesOfBotsInChannel = users.stream()
         .filter(Security::isABot)
         .map(bot -> stripChannelPrefix(bot.getNick()))
         .collect(Collectors.toList());

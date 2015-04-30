@@ -69,7 +69,7 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
     if (exception != null) {
       LOGGER.error("Transfer failed", exception);
     } else {
-      File listFile = dccFileTransfer.getFile();
+      final File listFile = dccFileTransfer.getFile();
       LOGGER.debug("Transfer completed: {}", listFile.getAbsolutePath());
       try {
         listFileWorker.updateAvailablePacks(dccFileTransfer.getNick(), listFile);
@@ -84,7 +84,7 @@ public class PackWatcher extends PircBot implements WatcherWithExternalState {
   @Override
   protected void onIncomingFileTransfer(DccFileTransfer transfer) {
     if (Security.isSourceABot(transfer)) {
-      File file = new File(filename(transfer));
+      final File file = new File(filename(transfer));
       transfer.receive(file, false);
       LOGGER.info("Accepted file {} from {}", file.getName(), transfer.getNick());
     } else {

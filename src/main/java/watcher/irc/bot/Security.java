@@ -9,6 +9,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Security {
 
+  private Security() {}
+
   static boolean isABot(User user) {
     return BOT_PREFIXES.stream().anyMatch(prefix -> user.getNick().startsWith(prefix));
   }
