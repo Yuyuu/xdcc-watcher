@@ -47,11 +47,11 @@ public class PackWatchingJob implements Job {
 
   private List<Bot> determineBotsToUpdate() {
     final BotRepository botRepository = RepositoryLocator.bots();
-    final List<Bot> botsToUpdate = botRepository.paginate((int) maxToUpdatePerJob, (int) currentOffset);
+    final List<Bot> botsToUpdate = botRepository.paginate((int) maxBotsToUpdatePerJob, (int) currentOffset);
 
-    if (numberOfBotsToUpdateBeforeCycling < maxToUpdatePerJob) {
+    if (numberOfBotsToUpdateBeforeCycling < maxBotsToUpdatePerJob) {
       botsToUpdate.addAll(
-          botRepository.paginate((int) (maxToUpdatePerJob - numberOfBotsToUpdateBeforeCycling), 0)
+          botRepository.paginate((int) (maxBotsToUpdatePerJob - numberOfBotsToUpdateBeforeCycling), 0)
       );
     }
 
@@ -60,10 +60,10 @@ public class PackWatchingJob implements Job {
 
   private long calculateNextOffset() {
     long nextOffset;
-    if (numberOfBotsToUpdateBeforeCycling < maxToUpdatePerJob) {
-      nextOffset = maxToUpdatePerJob - numberOfBotsToUpdateBeforeCycling;
+    if (numberOfBotsToUpdateBeforeCycling < maxBotsToUpdatePerJob) {
+      nextOffset = maxBotsToUpdatePerJob - numberOfBotsToUpdateBeforeCycling;
     } else {
-      nextOffset = currentOffset + maxToUpdatePerJob;
+      nextOffset = currentOffset + maxBotsToUpdatePerJob;
     }
     return nextOffset;
   }
@@ -72,12 +72,12 @@ public class PackWatchingJob implements Job {
     this.currentOffset = currentOffset;
   }
 
-  public void setMaxToUpdatePerJob(long maxToUpdatePerJob) {
-    this.maxToUpdatePerJob = maxToUpdatePerJob;
+  public void setMaxBotsToUpdatePerJob(long maxBotsToUpdatePerJob) {
+    this.maxBotsToUpdatePerJob = maxBotsToUpdatePerJob;
   }
 
   private long currentOffset;
-  private long maxToUpdatePerJob;
+  private long maxBotsToUpdatePerJob;
   private long numberOfBotsToUpdateBeforeCycling;
   private final WatcherFactory watcherFactory;
   private static final Logger LOGGER = LoggerFactory.getLogger(PackWatchingJob.class);

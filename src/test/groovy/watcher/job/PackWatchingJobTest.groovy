@@ -34,7 +34,7 @@ class PackWatchingJobTest extends Specification {
     given:
     withBotsInRepository(3)
     job.setCurrentOffset(2)
-    job.setMaxToUpdatePerJob(2)
+    job.setMaxBotsToUpdatePerJob(2)
 
     when:
     job.execute(context)
@@ -52,7 +52,7 @@ class PackWatchingJobTest extends Specification {
     given:
     withBotsInRepository(4)
     job.setCurrentOffset(0)
-    job.setMaxToUpdatePerJob(2)
+    job.setMaxBotsToUpdatePerJob(2)
 
     and:
     watcherFactory.createPackWatcherWithObjective(_ as List) >> Mock(PackWatcher)
@@ -68,7 +68,7 @@ class PackWatchingJobTest extends Specification {
     given:
     withBotsInRepository(2)
     job.setCurrentOffset(0)
-    job.setMaxToUpdatePerJob(1)
+    job.setMaxBotsToUpdatePerJob(1)
 
     and:
     PackWatcher packWatcher = Mock(PackWatcher)
