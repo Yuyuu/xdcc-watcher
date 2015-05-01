@@ -3,10 +3,10 @@ package watcher.infrastructure.persistence.mongo;
 import com.google.common.collect.Lists;
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkRepository;
 import org.jongo.Jongo;
+import org.mongolink.MongoSession;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
 import watcher.model.bot.Bot;
-import org.mongolink.MongoSession;
 import watcher.model.bot.BotRepository;
 
 import java.util.Collection;
@@ -17,6 +17,12 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
 
   protected BotRepositoryMongoLink(MongoSession session) {
     super(session);
+  }
+
+  @Override
+  public long count() {
+    final Jongo jongo = new Jongo((getSession().getDb()));
+    return jongo.getCollection("bot").count();
   }
 
   @Override
@@ -42,5 +48,13 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
   @Override
   public void removeAll(Collection<Bot> bots) {
     bots.stream().forEach(this::remove);
+  }
+
+  @Override
+  public List<Bot> paginate(int max, int offset) {
+    final Criteria criteria = criteria();
+    criteria.skip(offset);
+    criteria.limit(max);
+    return criteria.list();
   }
 }

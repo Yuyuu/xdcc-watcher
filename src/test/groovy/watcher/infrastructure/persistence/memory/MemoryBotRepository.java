@@ -8,8 +8,14 @@ import watcher.model.bot.BotRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MemoryBotRepository extends MemoryRepository<Bot> implements BotRepository {
+
+  @Override
+  public long count() {
+    return entities.size();
+  }
 
   @Override
   public List<Bot> getAllWithoutLoadingPacks() {
@@ -31,5 +37,10 @@ public class MemoryBotRepository extends MemoryRepository<Bot> implements BotRep
   @Override
   public void removeAll(Collection<Bot> bots) {
     entities.removeAll(bots);
+  }
+
+  @Override
+  public List<Bot> paginate(int max, int offset) {
+    return entities.stream().skip(offset).limit(max).collect(Collectors.toList());
   }
 }

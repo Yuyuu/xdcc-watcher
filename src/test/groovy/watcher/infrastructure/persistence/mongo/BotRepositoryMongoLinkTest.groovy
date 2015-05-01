@@ -115,4 +115,32 @@ class BotRepositoryMongoLinkTest extends Specification {
     repository.get(joeBot.id) == null
     repository.get(leaBot.id) == null
   }
+
+  def "counts the number of bots"() {
+    given:
+    mongolink.collection("bot") << [
+        [_id:ObjectId.get(), nickname:"joe", packs:[]],
+        [_id:ObjectId.get(), nickname:"lea", packs:[]]
+    ]
+
+    expect:
+    repository.count() == 2
+  }
+
+  def "can paginate"() {
+    given:
+    def kimId = ObjectId.get()
+    def bobId = ObjectId.get()
+    mongolink.collection("bot") << [
+        [_id:ObjectId.get(), nickname:"joe", packs:[]],
+        [_id:kimId, nickname:"kim", packs:[]],
+        [_id:bobId, nickname:"bob", packs:[]],
+        [_id:ObjectId.get(), nickname:"lea", packs:[]]
+    ]
+
+    expect:
+    def bots = repository.paginate(2, 1)
+    bots[0].id == kimId
+    bots[1].id == bobId
+  }
 }

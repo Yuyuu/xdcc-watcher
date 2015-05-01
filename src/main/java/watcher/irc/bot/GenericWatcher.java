@@ -21,4 +21,9 @@ public abstract class GenericWatcher extends PircBot implements Watcher {
   public void disconnectFromServer() {
     disconnect();
   }
+
+  @Override
+  public void say(String target, String message) {
+    sendMessage(target, message);
+  }
 }

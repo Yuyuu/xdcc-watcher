@@ -149,4 +149,12 @@ class PackWatcherTest extends Specification {
     then:
     1 * dccFileTransfer.receive(_ as File, false)
   }
+
+  def "notifies the external state handler when connected to channel"() {
+    when:
+    packWatcher.onUserList("#channel", null)
+
+    then:
+    1 * stateHandler.connectedToChannel()
+  }
 }

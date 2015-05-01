@@ -11,4 +11,6 @@ public interface Watcher {
   void joinServerChannel(String channelName);
 
   void disconnectFromServer();
+
+  void say(String target, String message);
 }

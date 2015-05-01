@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface BotRepository extends Repository<Bot> {
 
+  long count();
+
   List<Bot> getAllWithoutLoadingPacks();
 
   Optional<Bot> findByNickname(String nickname);
@@ -15,4 +17,6 @@ public interface BotRepository extends Repository<Bot> {
   void addAll(Collection<Bot> bots);
 
   void removeAll(Collection<Bot> bots);
+
+  List<Bot> paginate(int max, int offset);
 }

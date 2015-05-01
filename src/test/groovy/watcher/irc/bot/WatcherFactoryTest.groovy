@@ -2,6 +2,7 @@ package watcher.irc.bot
 
 import com.google.inject.Injector
 import spock.lang.Specification
+import watcher.model.bot.Bot
 
 class WatcherFactoryTest extends Specification {
 
@@ -19,11 +20,15 @@ class WatcherFactoryTest extends Specification {
     PackWatcher packWatcher = Mock(PackWatcher)
     injector.getInstance(PackWatcher.class) >> packWatcher
 
+    and:
+    def bobBot = new Bot("bob")
+    def kimBot = new Bot("kim")
+
     when:
-    watcherFactory.createPackWatcherWithObjective(5)
+    watcherFactory.createPackWatcherWithObjective([bobBot, kimBot])
 
     then:
-    1 * packWatcher.setStateHandler({ handler -> handler.numberOfBotsToCheck == 5 })
+    1 * packWatcher.setStateHandler({ handler -> handler.botsToUpdate == [bobBot, kimBot] })
   }
 
   def "creates a default pack watcher"() {

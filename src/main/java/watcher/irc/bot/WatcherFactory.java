@@ -1,10 +1,11 @@
 package watcher.irc.bot;
 
 import com.google.inject.Injector;
-import org.jibble.pircbot.PircBot;
 import watcher.irc.bot.state.PackWatcherStateHandler;
+import watcher.model.bot.Bot;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class WatcherFactory {
 
@@ -13,13 +14,13 @@ public class WatcherFactory {
     this.injector = injector;
   }
 
-  public <TWatcher extends PircBot> TWatcher createWatcher(Class<TWatcher> watcherClass) {
+  public <TWatcher extends Watcher> TWatcher createWatcher(Class<TWatcher> watcherClass) {
     return injector.getInstance(watcherClass);
   }
 
-  public PackWatcher createPackWatcherWithObjective(int numberOfBotsToUpdate) {
+  public PackWatcher createPackWatcherWithObjective(List<Bot> botsToUpdate) {
     PackWatcher packWatcher = injector.getInstance(PackWatcher.class);
-    packWatcher.setStateHandler(new PackWatcherStateHandler(packWatcher, numberOfBotsToUpdate));
+    packWatcher.setStateHandler(new PackWatcherStateHandler(packWatcher, botsToUpdate));
     return packWatcher;
   }
 

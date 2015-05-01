@@ -1,23 +1,31 @@
 package watcher.irc.bot.state;
 
 import watcher.irc.bot.PackWatcher;
+import watcher.model.bot.Bot;
+
+import java.util.List;
 
 public class PackWatcherStateHandler implements StateHandler {
 
-  public PackWatcherStateHandler(PackWatcher packWatcher, int numberOfBotsToCheck) {
+  public PackWatcherStateHandler(PackWatcher packWatcher, List<Bot> botsToUpdate) {
     this.packWatcher = packWatcher;
-    this.numberOfBotsToCheck = numberOfBotsToCheck;
+    this.botsToUpdate = botsToUpdate;
+  }
+
+  @Override
+  public void connectedToChannel() {
+    botsToUpdate.stream().forEach(bot -> packWatcher.say(bot.nickname(), "xdcc send -1"));
   }
 
   @Override
   public void done() {
     botsChecked++;
-    if (botsChecked >= numberOfBotsToCheck) {
+    if (botsChecked >= botsToUpdate.size()) {
       packWatcher.disconnectFromServer();
     }
   }
 
-  private int botsChecked = 0;
+  private long botsChecked = 0;
   private final PackWatcher packWatcher;
-  private final int numberOfBotsToCheck;
+  private final List<Bot> botsToUpdate;
 }

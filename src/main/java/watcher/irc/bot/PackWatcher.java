@@ -3,6 +3,7 @@ package watcher.irc.bot;
 import fr.vter.xdcc.infrastructure.persistence.mongo.MongoLinkContext;
 import org.jibble.pircbot.DccFileTransfer;
 import org.jibble.pircbot.ReplyConstants;
+import org.jibble.pircbot.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import watcher.irc.bot.state.StateHandler;
@@ -36,6 +37,11 @@ public class PackWatcher extends GenericWatcher implements WatcherWithExternalSt
   protected void onDisconnect() {
     LOGGER.debug("{} disconnected from server", getClass().getSimpleName());
     mongoLinkContext.ultimately();
+  }
+
+  @Override
+  protected void onUserList(String channel, User[] users) {
+    stateHandler.connectedToChannel();
   }
 
   @Override
