@@ -64,7 +64,10 @@ public class GuiceConfiguration extends AbstractModule {
   @Provides
   @Singleton
   public MongoSessionManager mongoLink() {
-    final MongoClientURI uri = new MongoClientURI(System.getenv("XDCC_WATCHER_MONGO_URI"));
+    final MongoClientURI uri = new MongoClientURI(
+        Optional.ofNullable(System.getenv("XDCC_WATCHER_MONGO_URI"))
+            .orElseThrow(() -> new IllegalStateException("Missing database configuration"))
+    );
     Settings settings = Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF)
         .withHost(extractHostname(uri.getHosts().get(0)))
         .withPort(extractPort(uri.getHosts().get(0)))
