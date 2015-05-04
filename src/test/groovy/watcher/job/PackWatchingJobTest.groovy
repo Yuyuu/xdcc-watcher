@@ -50,7 +50,7 @@ class PackWatchingJobTest extends Specification {
   }
 
   @Unroll
-  def "calculates a correct"() {
+  def "calculates a correct offset"() {
     given:
     withBotsInRepository(botsInRepository)
     job.setCurrentOffset(currentOffset)
