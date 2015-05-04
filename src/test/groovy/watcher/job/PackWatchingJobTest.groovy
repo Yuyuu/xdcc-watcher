@@ -5,6 +5,7 @@ import org.quartz.JobDataMap
 import org.quartz.JobDetail
 import org.quartz.JobExecutionContext
 import spock.lang.Specification
+import spock.lang.Unroll
 import watcher.infrastructure.persistence.memory.WithMemoryRepository
 import watcher.irc.bot.PackWatcher
 import watcher.irc.bot.WatcherFactory
@@ -48,11 +49,12 @@ class PackWatchingJobTest extends Specification {
     1 * dataMap.put("currentOffset", 1)
   }
 
-  def "calculates a correct offset if no cycling is required"() {
+  @Unroll
+  def "calculates a correct"() {
     given:
-    withBotsInRepository(4)
-    job.setCurrentOffset(0)
-    job.setMaxBotsToUpdatePerJob(2)
+    withBotsInRepository(botsInRepository)
+    job.setCurrentOffset(currentOffset)
+    job.setMaxBotsToUpdatePerJob(maxBotsToUpdate)
 
     and:
     watcherFactory.createPackWatcherWithObjective(_ as List) >> Mock(PackWatcher)
@@ -61,7 +63,12 @@ class PackWatchingJobTest extends Specification {
     job.execute(context)
 
     then:
-    1 * dataMap.put("currentOffset", 2)
+    1 * dataMap.put("currentOffset", nextOffset)
+
+    where:
+    botsInRepository | currentOffset | maxBotsToUpdate || nextOffset
+    4                | 0             | 2               || 2
+    4                | 2             | 2               || 0
   }
 
   def "connects the bot to the channel and ends"() {

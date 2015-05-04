@@ -27,7 +27,8 @@ public class PackWatchingJob implements Job {
   public void execute(JobExecutionContext context) throws JobExecutionException {
     LOGGER.debug("Beginning of {}", getClass().getSimpleName());
 
-    this.numberOfBotsToUpdateBeforeCycling = RepositoryLocator.bots().count() - currentOffset;
+    final long numberOfBotsInRepository = RepositoryLocator.bots().count();
+    this.numberOfBotsToUpdateBeforeCycling = numberOfBotsInRepository - currentOffset;
     final List<Bot> nicknamesOfBotsToUpdate = determineBotsToUpdate();
 
     final PackWatcher packWatcher = watcherFactory.createPackWatcherWithObjective(nicknamesOfBotsToUpdate);
@@ -36,7 +37,7 @@ public class PackWatchingJob implements Job {
       packWatcher.connectToServer("irc.otaku-irc.fr");
       packWatcher.joinServerChannel("#serial_us");
 
-      final long nextOffset = calculateNextOffset();
+      final long nextOffset = calculateNextOffset(numberOfBotsInRepository);
       context.getJobDetail().getJobDataMap().put("currentOffset", nextOffset);
     } catch (IrcException | IOException e) {
       LOGGER.error("Failed to connect the watcher to the server", e);
@@ -58,12 +59,13 @@ public class PackWatchingJob implements Job {
     return botsToUpdate;
   }
 
-  private long calculateNextOffset() {
+  private long calculateNextOffset(long numberOfBotsInRepository) {
     long nextOffset;
     if (numberOfBotsToUpdateBeforeCycling < maxBotsToUpdatePerJob) {
       nextOffset = maxBotsToUpdatePerJob - numberOfBotsToUpdateBeforeCycling;
     } else {
-      nextOffset = currentOffset + maxBotsToUpdatePerJob;
+      final long assumptiveOffset = currentOffset + maxBotsToUpdatePerJob;
+      nextOffset = (assumptiveOffset == numberOfBotsInRepository) ? 0 : assumptiveOffset;
     }
     return nextOffset;
   }
