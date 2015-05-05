@@ -4,15 +4,18 @@ import org.quartz.JobExecutionContext
 import spock.lang.Specification
 import watcher.irc.bot.BotWatcher
 import watcher.irc.bot.WatcherFactory
+import watcher.schedule.configuration.IrcConfiguration
 
 class BotWatchingJobTest extends Specification {
 
   BotWatchingJob job
-  WatcherFactory watcherFactory
+  WatcherFactory watcherFactory = Mock(WatcherFactory)
+  IrcConfiguration ircConfiguration = Mock(IrcConfiguration)
 
   def setup() {
-    watcherFactory = Mock(WatcherFactory)
-    job = new BotWatchingJob(watcherFactory)
+    ircConfiguration.server = "irc.server"
+    ircConfiguration.channel = "irc.channel"
+    job = new BotWatchingJob(watcherFactory, ircConfiguration)
   }
 
   def "connects the bot to the channel and ends"() {
@@ -25,8 +28,8 @@ class BotWatchingJobTest extends Specification {
     job.execute(context)
 
     then:
-    1 * botWatcher.connectToServer("irc.otaku-irc.fr")
+    1 * botWatcher.connectToServer("irc.server")
     then:
-    1 * botWatcher.joinServerChannel("#serial_us")
+    1 * botWatcher.joinServerChannel("irc.channel")
   }
 }

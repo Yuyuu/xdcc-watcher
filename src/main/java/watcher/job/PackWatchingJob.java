@@ -11,6 +11,7 @@ import watcher.irc.bot.WatcherFactory;
 import watcher.model.RepositoryLocator;
 import watcher.model.bot.Bot;
 import watcher.model.bot.BotRepository;
+import watcher.schedule.configuration.IrcConfiguration;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -19,8 +20,9 @@ import java.util.List;
 public class PackWatchingJob implements Job {
 
   @Inject
-  public PackWatchingJob(WatcherFactory watcherFactory) {
+  public PackWatchingJob(WatcherFactory watcherFactory, IrcConfiguration ircConfiguration) {
     this.watcherFactory = watcherFactory;
+    this.ircConfiguration = ircConfiguration;
   }
 
   @Override
@@ -34,8 +36,8 @@ public class PackWatchingJob implements Job {
     final PackWatcher packWatcher = watcherFactory.createPackWatcherWithObjective(nicknamesOfBotsToUpdate);
 
     try {
-      packWatcher.connectToServer("irc.otaku-irc.fr");
-      packWatcher.joinServerChannel("#serial_us");
+      packWatcher.connectToServer(ircConfiguration.server);
+      packWatcher.joinServerChannel(ircConfiguration.channel);
 
       final long nextOffset = calculateNextOffset(numberOfBotsInRepository);
       context.getJobDetail().getJobDataMap().put("currentOffset", nextOffset);
@@ -82,5 +84,6 @@ public class PackWatchingJob implements Job {
   private long maxBotsToUpdatePerJob;
   private long numberOfBotsToUpdateBeforeCycling;
   private final WatcherFactory watcherFactory;
+  private final IrcConfiguration ircConfiguration;
   private static final Logger LOGGER = LoggerFactory.getLogger(PackWatchingJob.class);
 }

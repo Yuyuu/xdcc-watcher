@@ -11,6 +11,7 @@ import watcher.irc.bot.PackWatcher
 import watcher.irc.bot.WatcherFactory
 import watcher.model.RepositoryLocator
 import watcher.model.bot.Bot
+import watcher.schedule.configuration.IrcConfiguration
 
 class PackWatchingJobTest extends Specification {
 
@@ -19,12 +20,15 @@ class PackWatchingJobTest extends Specification {
 
   PackWatchingJob job
   WatcherFactory watcherFactory = Mock(WatcherFactory)
+  IrcConfiguration ircConfiguration = Mock(IrcConfiguration)
 
   JobExecutionContext context = Mock(JobExecutionContext)
   JobDataMap dataMap = Mock(JobDataMap)
 
   def setup() {
-    job = new PackWatchingJob(watcherFactory)
+    ircConfiguration.server = "irc.server"
+    ircConfiguration.channel = "irc.channel"
+    job = new PackWatchingJob(watcherFactory, ircConfiguration)
 
     JobDetail jobDetail = Mock(JobDetail)
     context.getJobDetail() >> jobDetail
@@ -85,9 +89,9 @@ class PackWatchingJobTest extends Specification {
     job.execute(context)
 
     then:
-    1 * packWatcher.connectToServer("irc.otaku-irc.fr")
+    1 * packWatcher.connectToServer("irc.server")
     then:
-    1 * packWatcher.joinServerChannel("#serial_us")
+    1 * packWatcher.joinServerChannel("irc.channel")
   }
 
   private static void withBotsInRepository(int n) {
