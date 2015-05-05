@@ -23,7 +23,7 @@ public class BotListingUrlFinder {
     return botListingUrl;
   }
 
-  private String extractListingUrl(String urlLine) {
+  private static String extractListingUrl(String urlLine) {
     return urlLine.substring(
         urlLine.indexOf("href=\"") + 6,
         urlLine.indexOf("/\">") + 1

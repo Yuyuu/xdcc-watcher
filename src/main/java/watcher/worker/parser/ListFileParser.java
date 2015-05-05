@@ -60,7 +60,7 @@ public class ListFileParser {
     return packEntry;
   }
 
-  private String stripNumberSign(String id) {
+  private static String stripNumberSign(String id) {
     return id.substring(1);
   }
 

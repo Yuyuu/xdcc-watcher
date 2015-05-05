@@ -12,18 +12,18 @@ import java.util.stream.Collectors;
 public class BotWorker {
 
   public void updateAvailableBots(List<String> namesOfBotsInChannel) {
-    List<Bot> botsInRepository = RepositoryLocator.bots().getAllWithoutLoadingPacks();
+    final List<Bot> botsInRepository = RepositoryLocator.bots().getAllWithoutLoadingPacks();
 
     addNewBots(botsInRepository, namesOfBotsInChannel);
     removeObsoleteBots(botsInRepository, namesOfBotsInChannel);
   }
 
-  private void addNewBots(List<Bot> botsInRepository, List<String> namesOfBotsInChannel) {
-    List<String> namesOfBotsInRepository = botsInRepository.stream()
+  private static void addNewBots(List<Bot> botsInRepository, List<String> namesOfBotsInChannel) {
+    final List<String> namesOfBotsInRepository = botsInRepository.stream()
         .map(Bot::nickname)
         .collect(Collectors.toList());
 
-    Set<Bot> botsToAdd = namesOfBotsInChannel.stream()
+    final Set<Bot> botsToAdd = namesOfBotsInChannel.stream()
         .filter(nickname -> !namesOfBotsInRepository.contains(nickname))
         .map(Bot::new)
         .collect(Collectors.toSet());
@@ -32,8 +32,8 @@ public class BotWorker {
     RepositoryLocator.bots().addAll(botsToAdd);
   }
 
-  private void removeObsoleteBots(List<Bot> botsInRepository, List<String> namesOfBotsInChannel) {
-    List<Bot> botsToRemove = botsInRepository.stream()
+  private static void removeObsoleteBots(List<Bot> botsInRepository, List<String> namesOfBotsInChannel) {
+    final List<Bot> botsToRemove = botsInRepository.stream()
         .filter(bot -> !namesOfBotsInChannel.contains(bot.nickname()))
         .collect(Collectors.toList());
 

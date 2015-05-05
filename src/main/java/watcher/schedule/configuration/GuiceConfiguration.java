@@ -18,7 +18,9 @@ import watcher.irc.bot.WatcherFactory;
 import watcher.job.GuiceJobFactory;
 import watcher.model.RepositoryLocator;
 import watcher.website.XdaysaysayWebsiteLocator;
-import watcher.worker.WebsiteLocator;
+import watcher.worker.*;
+import watcher.worker.parser.ListFileParser;
+import watcher.worker.parser.WebsiteParser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,8 +33,9 @@ public class GuiceConfiguration extends AbstractModule {
   protected void configure() {
     Names.bindProperties(binder(), properties());
     configurePersistence();
-    configureJobs();
     configureWebsite();
+    configureWorkers();
+    configureJobs();
   }
 
   private Properties properties() {
@@ -52,13 +55,25 @@ public class GuiceConfiguration extends AbstractModule {
     bind(RepositoryLocator.class).to(RepositoryLocatorMongoLink.class).in(Singleton.class);
   }
 
+  private void configureWebsite() {
+    bind(WebsiteLocator.class).to(XdaysaysayWebsiteLocator.class).in(Singleton.class);
+  }
+
+  private void configureWorkers() {
+    bind(BotWorker.class).in(Singleton.class);
+
+    bind(ListFileParser.class).in(Singleton.class);
+    bind(ListFileWorker.class).in(Singleton.class);
+
+    bind(BotListingUrlFinder.class).in(Singleton.class);
+
+    bind(WebsiteParser.class).in(Singleton.class);
+    bind(WebsiteWorker.class).in(Singleton.class);
+  }
+
   private void configureJobs() {
     bind(JobFactory.class).to(GuiceJobFactory.class).in(Singleton.class);
     bind(WatcherFactory.class).in(Singleton.class);
-  }
-
-  private void configureWebsite() {
-    bind(WebsiteLocator.class).to(XdaysaysayWebsiteLocator.class).in(Singleton.class);
   }
 
   @Provides

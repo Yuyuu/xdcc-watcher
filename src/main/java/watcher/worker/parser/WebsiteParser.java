@@ -30,12 +30,12 @@ public class WebsiteParser {
     return packs;
   }
 
-  private long extractPackIdFrom(String packIdLine) {
+  private static long extractPackIdFrom(String packIdLine) {
     final String idAsString = packIdLine.substring(packIdLine.indexOf("#") + 1, packIdLine.indexOf("</td>"));
     return Long.parseLong(idAsString);
   }
 
-  private String extractPackTitleFrom(String packTitleLine) {
+  private static String extractPackTitleFrom(String packTitleLine) {
     return packTitleLine.substring(packTitleLine.indexOf("title=\"") + 7, packTitleLine.indexOf("\">"));
   }
 }
