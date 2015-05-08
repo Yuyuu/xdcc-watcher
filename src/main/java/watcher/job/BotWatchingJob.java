@@ -23,15 +23,17 @@ public class BotWatchingJob implements Job {
 
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
+    LOGGER.debug("Beginning of {}", getClass().getSimpleName());
+
     final BotWatcher botWatcher = watcherFactory.createWatcher(BotWatcher.class);
 
-    LOGGER.debug("Beginning of {}", getClass().getSimpleName());
     try {
       botWatcher.connectToServer(ircConfiguration.server);
       botWatcher.joinServerChannel(ircConfiguration.channel);
     } catch (IrcException | IOException e) {
       LOGGER.error("Failed to connect the watcher to the server", e);
     }
+
     LOGGER.debug("End of {}", getClass().getSimpleName());
   }
 

@@ -28,7 +28,7 @@ public class BotWorker {
         .map(Bot::new)
         .collect(Collectors.toSet());
 
-    LOGGER.debug("Adding {} newly available bots", botsToAdd.size());
+    LOGGER.info("Adding {} newly available bots", botsToAdd.size());
     RepositoryLocator.bots().addAll(botsToAdd);
   }
 
@@ -37,7 +37,7 @@ public class BotWorker {
         .filter(bot -> !namesOfBotsInChannel.contains(bot.nickname()))
         .collect(Collectors.toList());
 
-    LOGGER.debug("Removing {} bots which are not available anymore", botsToRemove.size());
+    LOGGER.info("Removing {} bots which are not available anymore", botsToRemove.size());
     RepositoryLocator.bots().removeAll(botsToRemove);
   }
 

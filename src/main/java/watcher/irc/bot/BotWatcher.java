@@ -60,7 +60,7 @@ public class BotWatcher extends GenericWatcher {
     disconnect();
   }
 
-  private String stripChannelPrefix(String nickname) {
+  private static String stripChannelPrefix(String nickname) {
     return nickname.substring(1);
   }
 

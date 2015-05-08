@@ -38,7 +38,7 @@ public class WebsiteWorker extends Worker {
     } catch (IOException e) {
       bot.setListingUrl(null);
       LOGGER.error(
-          "Failed to open a connection at {} listing URL [{}]: {}",
+          "Failed to open a connection at {} listing URL [{}]",
           botNickname,
           botListingUrl,
           e
@@ -48,13 +48,12 @@ public class WebsiteWorker extends Worker {
 
   private Supplier<String> findListingUrl(String botNickname) {
     return () -> {
-      String listingUrl = null;
       try (final InputStream htmlData = WebsiteLocator.xdaysaysay().openStream()) {
-        listingUrl = botListingUrlFinder.findListingUrl(botNickname, htmlData);
+        return botListingUrlFinder.findListingUrl(botNickname, htmlData);
       } catch (IOException e) {
-        LOGGER.error("Failed to open a connection to the listing website: {}", e);
+        LOGGER.error("Failed to open a connection to the listing website", e);
+        return null;
       }
-      return listingUrl;
     };
   }
 

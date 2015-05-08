@@ -20,8 +20,8 @@ public abstract class Worker {
         .collect(Collectors.toSet());
 
     if (!packs.equals(bot.packs())) {
-      bot.updatePacks(packs);
       LOGGER.info("Bot {} has new packs", bot.nickname());
+      bot.updatePacks(packs);
     } else {
       LOGGER.debug("Packs of bot {} remain unchanged", bot.nickname());
     }
