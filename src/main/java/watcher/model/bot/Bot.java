@@ -5,8 +5,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import fr.vter.xdcc.model.EntityWithObjectId;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.Set;
 
 public class Bot implements EntityWithObjectId {
@@ -30,11 +30,11 @@ public class Bot implements EntityWithObjectId {
   }
 
   public void checked() {
-    lastChecked = new Date();
+    lastChecked = new DateTime();
   }
 
   public void updated() {
-    lastUpdated = new Date();
+    lastUpdated = new DateTime();
   }
 
   public void setListingUrl(String listingUrl) {
@@ -83,8 +83,8 @@ public class Bot implements EntityWithObjectId {
   private String nickname;
   private Set<Pack> packs = Sets.newHashSet();
   private String listingUrl;
-  private Date lastChecked;
-  private Date lastUpdated;
+  private DateTime lastChecked;
+  private DateTime lastUpdated;
   private long schemaVersion = SCHEMA_VERSION;
 
   public static final long SCHEMA_VERSION = 1;
