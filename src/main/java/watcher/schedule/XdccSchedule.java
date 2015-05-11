@@ -59,8 +59,8 @@ public class XdccSchedule extends BaseSchedule {
   private static void configurePackWatchingJob(Scheduler scheduler) throws SchedulerException {
     JobDetail job = newJob(PackWatchingJob.class)
         .withIdentity("PackJob", "WatcherGroup")
-        .usingJobData("maxBotsToUpdatePerJob", 15)
-        .usingJobData("currentOffset", 0)
+        .usingJobData("maxBotsToUpdatePerJob", 15L)
+        .usingJobData("currentOffset", 0L)
         .build();
     Trigger trigger = newTrigger()
         .withIdentity("PackJobTrigger", "WatcherGroup")
