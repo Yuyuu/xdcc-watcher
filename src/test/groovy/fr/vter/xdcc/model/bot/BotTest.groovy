@@ -49,7 +49,7 @@ class BotTest extends Specification {
     def bot = new Bot("joe")
 
     when:
-    def pack = new Pack(2, "episode 2")
+    def pack = new Pack(2, "episode 2", bot.id)
     bot.updatePacks([pack] as Set)
 
     then:
@@ -61,7 +61,7 @@ class BotTest extends Specification {
     def bot = new Bot("joe")
 
     when:
-    def pack = new Pack(2, "episode 2")
+    def pack = new Pack(2, "episode 2", bot.id)
     bot.updatePacks([pack] as Set)
 
     then:

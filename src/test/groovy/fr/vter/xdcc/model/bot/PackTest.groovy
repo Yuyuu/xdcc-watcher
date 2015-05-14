@@ -1,31 +1,27 @@
 package fr.vter.xdcc.model.bot
 
+import org.bson.types.ObjectId
 import spock.lang.Specification
 import watcher.model.bot.Pack
 
 class PackTest extends Specification {
 
-  def "gets a default id upon creation"() {
-    given:
-    def pack = new Pack(3, "episode 3")
+  static ObjectId id = ObjectId.get()
+  static ObjectId otherId = ObjectId.get()
 
-    expect:
-    pack.id != null
-  }
-
-  def "two packs with the same position and title are equal"() {
+  def "two packs with the same properties are equal"() {
     given:
-    def firstPack = new Pack(23, "season.02.episode.08")
-    def secondPack = new Pack(23, "season.02.episode.08")
+    def firstPack = new Pack(23, "season.02.episode.08", id)
+    def secondPack = new Pack(23, "season.02.episode.08", id)
 
     expect:
     firstPack == secondPack
   }
 
-  def "two packs with different positions are not equal"() {
+  def "two packs with different positions are different"() {
     given:
-    def firstPack = new Pack(23, "season.02.episode.08")
-    def secondPack = new Pack(10, "season.02.episode.08")
+    def firstPack = new Pack(23, "season.02.episode.08", id)
+    def secondPack = new Pack(10, "season.02.episode.08", id)
 
     expect:
     firstPack != secondPack
@@ -33,10 +29,46 @@ class PackTest extends Specification {
 
   def "two packs with different titles are not equal"() {
     given:
-    def firstPack = new Pack(23, "season.01.episode.12")
-    def secondPack = new Pack(23, "season.02.episode.08")
+    def firstPack = new Pack(23, "season.01.episode.12", id)
+    def secondPack = new Pack(23, "season.02.episode.08", id)
 
     expect:
     firstPack != secondPack
+  }
+
+  def "two packs which do not belong to the same bot are different"() {
+    given:
+    def firstPack = new Pack(10, "season.02.episode.08", id)
+    def secondPack = new Pack(10, "season.02.episode.08", otherId)
+
+    expect:
+    firstPack != secondPack
+  }
+
+  def "two packs with different position have different hashcodes"() {
+    given:
+    def firstPack = new Pack(23, "season.02.episode.08", id)
+    def secondPack = new Pack(10, "season.02.episode.08", id)
+
+    expect:
+    firstPack.hashCode() != secondPack.hashCode()
+  }
+
+  def "two packs with different title have different hashcodes"() {
+    given:
+    def firstPack = new Pack(23, "season.01.episode.12", id)
+    def secondPack = new Pack(23, "season.02.episode.08", id)
+
+    expect:
+    firstPack.hashCode() != secondPack.hashCode()
+  }
+
+  def "two packs with different bot id have different hashcodes"() {
+    given:
+    def firstPack = new Pack(10, "season.02.episode.08", id)
+    def secondPack = new Pack(10, "season.02.episode.08", otherId)
+
+    expect:
+    firstPack.hashCode() != secondPack.hashCode()
   }
 }

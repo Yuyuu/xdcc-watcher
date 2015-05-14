@@ -16,7 +16,7 @@ public abstract class Worker {
 
   protected void updatePacks(Bot bot, Map<Long,String> packDataFromExternalSource) {
     final Set<Pack> packs = packDataFromExternalSource.entrySet().stream()
-        .map(entry -> new Pack(entry.getKey(), entry.getValue()))
+        .map(entry -> new Pack(entry.getKey(), entry.getValue(), bot.getId()))
         .collect(Collectors.toSet());
 
     if (!packs.equals(bot.packs())) {

@@ -41,7 +41,7 @@ class WebsiteWorkerTest extends Specification {
 
     then:
     def bot = RepositoryLocator.bots().get(joeBot.id)
-    bot.packs() == [new Pack(1, "episode 1"), new Pack(2, "episode 2")] as Set
+    bot.packs() == [new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set
   }
 
   def "can fetch the listing URL of the bot if it is not known yet"() {
@@ -86,7 +86,7 @@ class WebsiteWorkerTest extends Specification {
 
     then:
     def bot = RepositoryLocator.bots().findByNickname("joe").get()
-    bot.packs() == [new Pack(1, "episode 1")] as Set
+    bot.packs() == [new Pack(1, "episode 1", bot.id)] as Set
   }
 
   def "skips the process if the listing url cannot be found"() {

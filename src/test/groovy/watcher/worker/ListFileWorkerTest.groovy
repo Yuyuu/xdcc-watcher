@@ -36,7 +36,7 @@ class ListFileWorkerTest extends Specification {
 
     then:
     def bot = RepositoryLocator.bots().get(joeBot.id)
-    bot.packs() == [new Pack(1, "episode 1"), new Pack(2, "episode 2")] as Set
+    bot.packs() == [new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set
   }
 
   def "can create the bot if it does not exist yet"() {
@@ -49,7 +49,7 @@ class ListFileWorkerTest extends Specification {
 
     then:
     def bot = RepositoryLocator.bots().findByNickname("joe").get()
-    bot.packs() == [new Pack(1, "episode 1")] as Set
+    bot.packs() == [new Pack(1, "episode 1", bot.id)] as Set
   }
 
   def "updates the last checked date"() {

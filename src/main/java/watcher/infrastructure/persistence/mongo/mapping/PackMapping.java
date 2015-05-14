@@ -7,8 +7,8 @@ public class PackMapping extends AggregateMap<Pack> {
 
   @Override
   public void map() {
-    id().onField("id").natural();
     property().onField("position");
     property().onField("title");
+    property().onField("botId");
   }
 }
