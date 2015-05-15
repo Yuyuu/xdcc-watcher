@@ -4,6 +4,7 @@ import org.jibble.pircbot.IrcException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.PersistJobDataAfterExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import watcher.irc.bot.PackWatcher;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
+@PersistJobDataAfterExecution
 public class PackWatchingJob implements Job {
 
   @Inject
