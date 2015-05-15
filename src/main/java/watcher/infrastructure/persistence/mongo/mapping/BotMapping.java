@@ -13,6 +13,7 @@ public class BotMapping extends AggregateMap<Bot> {
     collection().onField("packs");
     property().onField("lastUpdated");
     property().onField("lastChecked");
+    property().onField("dateOfFirstUnavailability");
     property().onField("schemaVersion");
   }
 }

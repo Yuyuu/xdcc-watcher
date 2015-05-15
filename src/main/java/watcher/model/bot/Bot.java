@@ -1,7 +1,6 @@
 package watcher.model.bot;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import fr.vter.xdcc.model.EntityWithObjectId;
 import org.bson.types.ObjectId;
@@ -37,6 +36,14 @@ public class Bot implements EntityWithObjectId {
     lastUpdated = new DateTime();
   }
 
+  public void unavailable() {
+    dateOfFirstUnavailability = new DateTime();
+  }
+
+  public void available() {
+    dateOfFirstUnavailability = null;
+  }
+
   public void setListingUrl(String listingUrl) {
     this.listingUrl = listingUrl;
   }
@@ -57,6 +64,10 @@ public class Bot implements EntityWithObjectId {
     return listingUrl;
   }
 
+  public DateTime dateOfFirstUnavailability() {
+    return dateOfFirstUnavailability;
+  }
+
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
@@ -71,6 +82,7 @@ public class Bot implements EntityWithObjectId {
   private String listingUrl;
   private DateTime lastChecked;
   private DateTime lastUpdated;
+  private DateTime dateOfFirstUnavailability;
   private long schemaVersion = SCHEMA_VERSION;
 
   public static final long SCHEMA_VERSION = 1;
