@@ -30,13 +30,12 @@ public class PackWatcher extends GenericWatcher implements WatcherWithExternalSt
   @Override
   protected void onConnect() {
     LOGGER.debug("{} connected to server", getClass().getSimpleName());
-    mongoLinkContext.beforeExecution();
   }
 
   @Override
   protected void onDisconnect() {
     LOGGER.debug("{} disconnected from server", getClass().getSimpleName());
-    mongoLinkContext.ultimately();
+    dispose();
   }
 
   @Override
@@ -45,7 +44,7 @@ public class PackWatcher extends GenericWatcher implements WatcherWithExternalSt
   }
 
   @Override
-  protected synchronized void onServerResponse(int code, String response) {
+  protected void onServerResponse(int code, String response) {
     if (code == ReplyConstants.ERR_NOSUCHNICK) {
       LOGGER.error("Failed to contact bot: {}", response);
       botChecked();
@@ -53,23 +52,25 @@ public class PackWatcher extends GenericWatcher implements WatcherWithExternalSt
   }
 
   @Override
-  protected synchronized void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice) {
+  protected void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice) {
     if (notice.contains("Invalid Pack Number")) {
-      LOGGER.debug("List file of bot {} is not available, parsing website instead", sourceNick);
+      LOGGER.info("List file of bot {} is not available, parsing website instead", sourceNick);
       try {
+        mongoLinkContext.beforeExecution();
         websiteWorker.updateAvailablePacks(sourceNick);
         mongoLinkContext.afterExecution();
       } catch (Throwable e) {
         LOGGER.error("Error updating available packs with website", e);
         mongoLinkContext.onError();
       } finally {
+        mongoLinkContext.ultimately();
         botChecked();
       }
     }
   }
 
   @Override
-  protected synchronized void onFileTransferFinished(DccFileTransfer dccFileTransfer, Exception exception) {
+  protected void onFileTransferFinished(DccFileTransfer dccFileTransfer, Exception exception) {
     dccFileTransfer.close();
     if (exception != null) {
       LOGGER.error("Transfer failed", exception);
@@ -77,10 +78,17 @@ public class PackWatcher extends GenericWatcher implements WatcherWithExternalSt
       final File listFile = dccFileTransfer.getFile();
       LOGGER.debug("Transfer completed: {}", listFile.getAbsolutePath());
       try {
+        mongoLinkContext.beforeExecution();
         listFileWorker.updateAvailablePacks(dccFileTransfer.getNick(), listFile);
         mongoLinkContext.afterExecution();
       } catch (Throwable e) {
+        LOGGER.error("Error updating available packs with list file", e);
         mongoLinkContext.onError();
+      } finally {
+        mongoLinkContext.ultimately();
+        if (!listFile.delete()) {
+          LOGGER.warn("Failed to delete list file");
+        }
       }
     }
     botChecked();

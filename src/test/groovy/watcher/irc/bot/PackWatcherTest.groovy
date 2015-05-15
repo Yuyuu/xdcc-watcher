@@ -27,22 +27,6 @@ class PackWatcherTest extends Specification {
     packWatcher.stateHandler = stateHandler
   }
 
-  def "initializes the context upon connection"() {
-    when:
-    packWatcher.onConnect()
-
-    then:
-    1 * mongoLinkContext.beforeExecution()
-  }
-
-  def "cleans the context upon disconnection"() {
-    when:
-    packWatcher.onDisconnect()
-
-    then:
-    1 * mongoLinkContext.ultimately()
-  }
-
   def "skips a bot if it was not present on the channel"() {
     when:
     packWatcher.onServerResponse(ReplyConstants.ERR_NOSUCHNICK, "")
@@ -56,7 +40,10 @@ class PackWatcherTest extends Specification {
     packWatcher.onNotice("kim", null, null, null, "*** Invalid Pack Number ***")
 
     then:
+    1 * mongoLinkContext.beforeExecution()
     1 * websiteWorker.updateAvailablePacks("kim")
+    1 * mongoLinkContext.afterExecution()
+    1 * mongoLinkContext.ultimately()
     1 * stateHandler.done()
   }
 
@@ -69,6 +56,7 @@ class PackWatcherTest extends Specification {
 
     then:
     1 * mongoLinkContext.onError()
+    1 * mongoLinkContext.ultimately()
     1 * stateHandler.done()
   }
 
@@ -103,7 +91,10 @@ class PackWatcherTest extends Specification {
     packWatcher.onFileTransferFinished(dccFileTransfer, null)
 
     then:
+    1 * mongoLinkContext.beforeExecution()
     1 * listFileWorker.updateAvailablePacks(dccFileTransfer.getNick(), dccFileTransfer.getFile())
+    1 * mongoLinkContext.afterExecution()
+    1 * mongoLinkContext.ultimately()
     1 * stateHandler.done()
   }
 
@@ -121,6 +112,7 @@ class PackWatcherTest extends Specification {
 
     then:
     1 * mongoLinkContext.onError()
+    1 * mongoLinkContext.ultimately()
     1 * stateHandler.done()
   }
 
