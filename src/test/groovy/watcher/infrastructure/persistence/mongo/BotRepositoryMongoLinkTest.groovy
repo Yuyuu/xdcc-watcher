@@ -29,7 +29,8 @@ class BotRepositoryMongoLinkTest extends Specification {
 
     then:
     def foundElement = repository.get(bot.id)
-    foundElement == bot
+    foundElement.id == bot.id
+    foundElement.nickname() == "joe"
   }
 
   def "can get a bot"() {

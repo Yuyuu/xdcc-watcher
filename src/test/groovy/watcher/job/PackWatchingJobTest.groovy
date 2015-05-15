@@ -45,12 +45,7 @@ class PackWatchingJobTest extends Specification {
     job.execute(context)
 
     then:
-    1 * watcherFactory.createPackWatcherWithObjective({ List bots ->
-      bots.findIndexOf { Bot bot -> bot.nickname() == "bot_2" } == 0 &&
-          bots.findIndexOf { Bot bot -> bot.nickname() == "bot_0" } == 1
-    }) >> Mock(PackWatcher)
-    then:
-    1 * dataMap.put("currentOffset", 1)
+    1 * watcherFactory.createPackWatcherWithObjective({ List bots -> bots.size() == 2}) >> Mock(PackWatcher)
   }
 
   @Unroll

@@ -14,14 +14,14 @@ public class Bot implements EntityWithObjectId {
   @SuppressWarnings("unused")
   protected Bot() {}
 
-  @Override
-  public ObjectId getId() {
-    return _id;
-  }
-
   public Bot(String nickname) {
     _id = ObjectId.get();
     this.nickname = nickname;
+  }
+
+  @Override
+  public ObjectId getId() {
+    return _id;
   }
 
   public void updatePacks(Set<Pack> packSet) {
@@ -55,20 +55,6 @@ public class Bot implements EntityWithObjectId {
 
   public String url() {
     return listingUrl;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Bot bot = (Bot) o;
-    return Objects.equal(_id, bot._id) &&
-        Objects.equal(nickname, bot.nickname);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(_id, nickname);
   }
 
   @Override
