@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class BotWorker {
 
   public void updateAvailableBots(List<String> namesOfBotsInChannel) {
-    final List<Bot> botsInRepository = RepositoryLocator.bots().getAllWithoutLoadingPacks();
+    final List<Bot> botsInRepository = RepositoryLocator.bots().findAllWithoutLoadingPacks();
 
     addNewBots(botsInRepository, namesOfBotsInChannel);
     removeObsoleteBots(botsInRepository, namesOfBotsInChannel);

@@ -26,7 +26,7 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
   }
 
   @Override
-  public List<Bot> getAllWithoutLoadingPacks() {
+  public List<Bot> findAllWithoutLoadingPacks() {
     final Jongo jongo = new Jongo(getSession().getDb());
     final Iterable<Bot> bots = jongo.getCollection("bot").find().projection("{packs: 0}").as(Bot.class);
     return Lists.newArrayList(bots);
@@ -51,10 +51,10 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
   }
 
   @Override
-  public List<Bot> paginate(int max, int offset) {
-    final Criteria criteria = criteria();
-    criteria.skip(offset);
-    criteria.limit(max);
-    return criteria.list();
+  public List<Bot> paginateWithoutLoadingPacks(int max, int offset) {
+    final Jongo jongo = new Jongo(getSession().getDb());
+    final Iterable<Bot> bots = jongo.getCollection("bot").find()
+        .skip(offset).limit(max).projection("{packs: 0}").as(Bot.class);
+    return Lists.newArrayList(bots);
   }
 }

@@ -30,10 +30,10 @@ public class PackWatchingJob implements Job {
     LOGGER.debug("Beginning of {}", getClass().getSimpleName());
 
     final long numberOfBotsInRepository = RepositoryLocator.bots().count();
-    this.numberOfBotsToUpdateBeforeCycling = numberOfBotsInRepository - currentOffset;
-    final List<Bot> nicknamesOfBotsToUpdate = determineBotsToUpdate();
+    numberOfBotsToUpdateBeforeCycling = numberOfBotsInRepository - currentOffset;
+    final List<Bot> botsToUpdate = determineBotsToUpdate();
 
-    final PackWatcher packWatcher = watcherFactory.createPackWatcherWithObjective(nicknamesOfBotsToUpdate);
+    final PackWatcher packWatcher = watcherFactory.createPackWatcherWithObjective(botsToUpdate);
 
     try {
       packWatcher.connectToServer(ircConfiguration.server);
@@ -50,11 +50,11 @@ public class PackWatchingJob implements Job {
 
   private List<Bot> determineBotsToUpdate() {
     final BotRepository botRepository = RepositoryLocator.bots();
-    final List<Bot> botsToUpdate = botRepository.paginate((int) maxBotsToUpdatePerJob, (int) currentOffset);
+    final List<Bot> botsToUpdate = botRepository.paginateWithoutLoadingPacks((int) maxBotsToUpdatePerJob, (int) currentOffset);
 
     if (numberOfBotsToUpdateBeforeCycling < maxBotsToUpdatePerJob) {
       botsToUpdate.addAll(
-          botRepository.paginate((int) (maxBotsToUpdatePerJob - numberOfBotsToUpdateBeforeCycling), 0)
+          botRepository.paginateWithoutLoadingPacks((int) (maxBotsToUpdatePerJob - numberOfBotsToUpdateBeforeCycling), 0)
       );
     }
 

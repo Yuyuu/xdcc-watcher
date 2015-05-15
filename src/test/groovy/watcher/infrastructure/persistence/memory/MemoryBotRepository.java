@@ -18,7 +18,7 @@ public class MemoryBotRepository extends MemoryRepository<Bot> implements BotRep
   }
 
   @Override
-  public List<Bot> getAllWithoutLoadingPacks() {
+  public List<Bot> findAllWithoutLoadingPacks() {
     return Lists.newArrayList(entities);
   }
 
@@ -40,7 +40,7 @@ public class MemoryBotRepository extends MemoryRepository<Bot> implements BotRep
   }
 
   @Override
-  public List<Bot> paginate(int max, int offset) {
+  public List<Bot> paginateWithoutLoadingPacks(int max, int offset) {
     return entities.stream().skip(offset).limit(max).collect(Collectors.toList());
   }
 }

@@ -10,7 +10,7 @@ public interface BotRepository extends Repository<Bot> {
 
   long count();
 
-  List<Bot> getAllWithoutLoadingPacks();
+  List<Bot> findAllWithoutLoadingPacks();
 
   Optional<Bot> findByNickname(String nickname);
 
@@ -18,5 +18,5 @@ public interface BotRepository extends Repository<Bot> {
 
   void removeAll(Collection<Bot> bots);
 
-  List<Bot> paginate(int max, int offset);
+  List<Bot> paginateWithoutLoadingPacks(int max, int offset);
 }

@@ -83,7 +83,7 @@ class BotRepositoryMongoLinkTest extends Specification {
     ]
 
     expect:
-    List<Bot> list = repository.getAllWithoutLoadingPacks();
+    List<Bot> list = repository.findAllWithoutLoadingPacks();
     list.size() == 2
     list.every { it.id != null && it.packs().size() == 0 }
   }
@@ -126,20 +126,21 @@ class BotRepositoryMongoLinkTest extends Specification {
     repository.count() == 2
   }
 
-  def "can paginate"() {
+  def "can paginate and without loading the packs"() {
     given:
     def kimId = ObjectId.get()
     def bobId = ObjectId.get()
     mongolink.collection("bot") << [
         [_id:ObjectId.get(), nickname:"joe", packs:[]],
-        [_id:kimId, nickname:"kim", packs:[]],
+        [_id:kimId, nickname:"kim", packs:[[_id:ObjectId.get(), position:6, title:"episode 6"]]],
         [_id:bobId, nickname:"bob", packs:[]],
         [_id:ObjectId.get(), nickname:"lea", packs:[]]
     ]
 
     expect:
-    def bots = repository.paginate(2, 1)
+    def bots = repository.paginateWithoutLoadingPacks(2, 1)
     bots[0].id == kimId
+    bots[0].packs().empty
     bots[1].id == bobId
   }
 }
