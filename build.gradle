@@ -8,12 +8,15 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'
 
 ext {
-    mongoLinkVersion = "1.2.1"
+    mongoLinkVersion = "1.2.2-SNAPSHOT"
 }
 
 test {
