@@ -47,10 +47,6 @@ dependencies {
     testCompile 'com.gmongo:gmongo:1.5'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
-}
-
 task deps(type: Sync) {
     from configurations.compile
     into "$buildDir/deps"
