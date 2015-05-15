@@ -42,10 +42,8 @@ dependencies {
         transitive = false
     }
     testCompile 'org.mockito:mockito-core:2.0.7-beta'
-    testCompile 'org.assertj:assertj-core:3.0.0'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile "org.mongolink:mongolink-testtools:$mongoLinkVersion"
-    testCompile 'com.github.fakemongo:fongo:1.6.2'
     testCompile 'com.gmongo:gmongo:1.5'
 }
 
