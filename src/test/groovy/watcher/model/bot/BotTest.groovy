@@ -1,9 +1,7 @@
-package fr.vter.xdcc.model.bot
+package watcher.model.bot
 
 import org.bson.types.ObjectId
 import spock.lang.Specification
-import watcher.model.bot.Bot
-import watcher.model.bot.Pack
 
 @SuppressWarnings("GroovyAccessibility")
 class BotTest extends Specification {

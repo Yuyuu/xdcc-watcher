@@ -16,7 +16,10 @@ public class PackWatcherStateHandler implements StateHandler {
 
   @Override
   public void connectedToChannel() {
-    botsToUpdate.stream().forEach(bot -> packWatcher.say(bot.nickname(), "xdcc send -1"));
+    botsToUpdate.stream().forEach(bot -> {
+      LOGGER.debug("Querying {} for its list file", bot.nickname());
+      packWatcher.say(bot.nickname(), "xdcc send -1");
+    });
   }
 
   @Override
