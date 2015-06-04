@@ -23,8 +23,8 @@ public class Bot implements EntityWithObjectId {
     return _id;
   }
 
-  public void updatePacks(Set<Pack> packSet) {
-    this.packs = packSet;
+  public void updatePacks(Set<Pack> packs) {
+    this.packs = packs;
     updated();
   }
 

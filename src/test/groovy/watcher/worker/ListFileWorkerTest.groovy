@@ -22,7 +22,7 @@ class ListFileWorkerTest extends Specification {
     listFileWorker = new ListFileWorker(listFileParser)
   }
 
-  def "updates the available bots"() {
+  def "updates the available packs"() {
     given:
     def joeBot = new Bot("joe")
     RepositoryLocator.bots().add(joeBot)
@@ -37,6 +37,24 @@ class ListFileWorkerTest extends Specification {
     then:
     def bot = RepositoryLocator.bots().get(joeBot.id)
     bot.packs() == [new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set
+  }
+
+  def "does not add the same pack multiple times"() {
+    given:
+    def joeBot = new Bot("joe")
+    joeBot.updatePacks([new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set)
+    RepositoryLocator.bots().add(joeBot)
+
+    and:
+    def file = new File("list.txt")
+    listFileParser.parsePacksFrom(file) >> [1L: "episode 1", 2L: "episode 2", 3L: "episode 3"]
+
+    when:
+    listFileWorker.updateAvailablePacks("joe", file)
+
+    then:
+    def bot = RepositoryLocator.bots().get(joeBot.id)
+    bot.packs() == [new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id), new Pack(3, "episode 3", joeBot.id)] as Set
   }
 
   def "can create the bot if it does not exist yet"() {
