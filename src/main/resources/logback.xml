@@ -5,8 +5,12 @@
         </encoder>
     </appender>
 
-    <logger name="fr.vter.xdcc" additivity="false" level="INFO"/>
-    <logger name="watcher" additivity="false" level="INFO"/>
+    <logger name="fr.vter.xdcc" additivity="false" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="watcher" additivity="false" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
