@@ -9,7 +9,6 @@ import org.mongolink.domain.criteria.Restrictions;
 import watcher.model.bot.Bot;
 import watcher.model.bot.BotRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,16 +37,6 @@ public class BotRepositoryMongoLink extends MongoLinkRepository<Bot> implements 
     criteria.add(Restrictions.equals("nickname", nickname));
     List<Bot> bots = criteria.list();
     return bots.stream().findFirst();
-  }
-
-  @Override
-  public void addAll(Collection<Bot> bots) {
-    bots.stream().forEach(this::add);
-  }
-
-  @Override
-  public void removeAll(Collection<Bot> bots) {
-    bots.stream().forEach(this::remove);
   }
 
   @Override

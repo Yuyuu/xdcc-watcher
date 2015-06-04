@@ -42,7 +42,7 @@ class ListFileWorkerTest extends Specification {
   def "does not add the same pack multiple times"() {
     given:
     def joeBot = new Bot("joe")
-    joeBot.updatePacks([new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set)
+    joeBot.packs = [new Pack(1, "episode 1", joeBot.id), new Pack(2, "episode 2", joeBot.id)] as Set
     RepositoryLocator.bots().add(joeBot)
 
     and:

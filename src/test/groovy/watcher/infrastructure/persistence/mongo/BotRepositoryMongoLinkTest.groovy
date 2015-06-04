@@ -89,33 +89,6 @@ class BotRepositoryMongoLinkTest extends Specification {
     list.every { it.id != null && it.packs().size() == 0 }
   }
 
-  def "can add several at once"() {
-    given:
-    def listOfBots = [new Bot("kim"), new Bot("lea")]
-    repository.addAll(listOfBots)
-    mongolink.cleanSession()
-
-    expect:
-    listOfBots.every { repository.get(it.id) != null }
-  }
-
-  def "can remove several at once"() {
-    given:
-    def kimBot = new Bot("kim")
-    def joeBot = new Bot("joe")
-    def leaBot = new Bot("lea")
-    repository.addAll([kimBot, leaBot, joeBot])
-
-    when:
-    repository.removeAll([joeBot, leaBot])
-    mongolink.cleanSession()
-
-    then:
-    repository.get(kimBot.id) != null
-    repository.get(joeBot.id) == null
-    repository.get(leaBot.id) == null
-  }
-
   def "counts the number of bots"() {
     given:
     mongolink.collection("bot") << [
